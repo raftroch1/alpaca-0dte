@@ -74,13 +74,21 @@ ALPACA_DATA_URL=https://data.alpaca.markets
 
 ### 4. Verify Setup
 
-#### Run Connectivity Test
-```bash
-# Ensure conda environment is activated
-conda activate Alpaca_Options
+#### 🧪 Step 4: Verify Framework Connectivity
 
-# Run comprehensive connectivity test
-python test_framework_connectivity.py
+Run the comprehensive connectivity test using the organized test suite:
+
+```bash
+# Run all tests
+python framework_tests/run_all_tests.py
+
+# Quick test (skip long-running tests)
+python framework_tests/run_all_tests.py --quick
+
+# Individual test categories
+python framework_tests/run_all_tests.py --connectivity
+python framework_tests/run_all_tests.py --alpaca
+python framework_tests/run_all_tests.py --strategy
 ```
 
 **Expected Results**:

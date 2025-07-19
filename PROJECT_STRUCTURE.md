@@ -121,6 +121,31 @@ alpaca-0dte/
 - Data availability validation
 - Error handling and recovery
 
+## 🧪 Testing and Validation
+
+### Framework Tests Directory (`/framework_tests/`)
+All custom framework testing files are organized in a dedicated directory (separate from core SDK):
+
+#### `/framework_tests/connectivity/`
+- `test_framework_connectivity.py` - Comprehensive framework connectivity test
+- `README.md` - Testing documentation and usage guide
+- `run_all_tests.py` - Organized test runner for all categories
+
+#### `/framework_tests/alpaca/`
+- `test_alpaca_api.py` - Alpaca API key and endpoint validation
+- `test_alpaca_sdk_proper.py` - Proper SDK usage validation
+- `test_trading_specific.py` - Trading-specific API investigation
+- `diagnose_alpaca_account.py` - Account diagnostics and troubleshooting
+
+#### `/framework_tests/strategy/`
+- `test_strategy_startup.py` - Strategy initialization testing for API failures
+
+### Data Caching
+- SPY minute bars cached in `thetadata/cached_data/spy_bars/`
+- Option chains cached in `thetadata/cached_data/option_chains/`
+- Compressed pickle format for fast loading
+- Date-based file organization
+
 ## 🔌 ThetaData Connection
 
 ### Connection Requirements
@@ -129,11 +154,6 @@ alpaca-0dte/
 - Connection validation before strategy execution
 - Proper error handling for API failures
 
-### Data Caching
-- SPY minute bars cached in `thetadata/cached_data/spy_bars/`
-- Option chains cached in `thetadata/cached_data/option_chains/`
-- Compressed pickle format for fast loading
-- Date-based file organization
 
 ## 🚀 Quick Start
 
