@@ -1,0 +1,29 @@
+name: Alpaca_Options
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - pandas>=1.5.3
+  - scipy
+  - matplotlib
+  - seaborn
+  - jupyter
+  - ipykernel
+  - requests>=2.30.0
+  - pip:
+    - alpaca-py
+    - backtrader
+    - yfinance
+    - python-dotenv
+    - msgpack>=1.0.3
+    - websockets>=10.4
+    - sseclient-py>=1.7.2
+    - pydantic>=2.0.3
+    - pytest>=7.1
+    - pytest-asyncio>=0.23.7
+    - requests-mock>=1.9.3
+    - black>=24.3.0
+    - isort>=5.10.1

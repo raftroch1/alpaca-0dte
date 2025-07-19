@@ -1,0 +1,167 @@
+# Windsurf Rules for Alpaca 0DTE Trading Framework
+# ================================================
+
+# 🚨 CRITICAL: CORE SDK PROTECTION
+# Never modify any files in the alpaca/ directory - this is the original Alpaca Python SDK
+NEVER_MODIFY:
+  - alpaca/**/*
+  - .git/**/*
+  - poetry.lock
+  - pyproject.toml
+
+# 🎯 DEVELOPMENT FOCUS AREAS
+# Only work in these directories for custom functionality
+ALLOWED_MODIFICATIONS:
+  - thetadata/**/*
+  - strategies/**/*
+  - backtrader/**/*
+  - config/**/*
+  - docs/**/*
+
+# 🐍 ENVIRONMENT REQUIREMENTS
+CONDA_ENVIRONMENT: "Alpaca_Options"
+PYTHON_VERSION: ">=3.8.0"
+
+# 📁 PROJECT STRUCTURE RULES
+DIRECTORY_STRUCTURE:
+  strategies/:
+    purpose: "Strategy development and execution"
+    required_files:
+      - base_theta_strategy.py
+      - cached_strategy_runner.py
+    subdirectories:
+      - logs/
+      - templates/
+  
+  thetadata/:
+    purpose: "ThetaData integration and caching"
+    required_files:
+      - theta_connection/connector.py
+      - theta_connection/thetadata_collector.py
+    subdirectories:
+      - cached_data/spy_bars/
+      - cached_data/option_chains/
+      - tests/
+  
+  backtrader/:
+    purpose: "Backtesting framework"
+    subdirectories:
+      - results/
+
+# 🎯 STRATEGY DEVELOPMENT RULES
+STRATEGY_CONVENTIONS:
+  inheritance: "All strategies MUST inherit from BaseThetaStrategy"
+  naming:
+    base_strategy: "[strategy_name]_v1.py"
+    versions: "[strategy_name]_v2.py, [strategy_name]_v3.py, etc."
+    class_names: "PascalCase (e.g., VixContrarianStrategy)"
+  
+  required_methods:
+    - analyze_market_conditions()
+    - execute_strategy()
+    - calculate_position_size()
+  
+  logging:
+    location: "strategies/logs/"
+    format: "{strategy_name}_{version}_{timestamp}.log"
+    csv_results: "{strategy_name}_{version}_{timestamp}_trades.csv"
+
+# 📊 DATA REQUIREMENTS
+DATA_RULES:
+  source: "ONLY real ThetaData - NO simulation fallback"
+  connection_validation: "REQUIRED before strategy execution"
+  error_handling: "Skip trades when real data unavailable"
+  caching: "Use compressed pickle files for fast loading"
+
+# 🔌 THETADATA CONNECTION
+THETADATA_CONFIG:
+  endpoint: "http://127.0.0.1:25510"
+  terminal_required: true
+  connection_test: "thetadata/theta_connection/connector.py"
+
+# 📝 LOGGING STANDARDS
+LOGGING_REQUIREMENTS:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  outputs:
+    - file: "strategies/logs/"
+    - console: true
+  
+  performance_metrics:
+    - win_rate
+    - profit_loss
+    - trade_execution_timing
+    - data_availability
+    - error_recovery
+
+# 🧪 TESTING REQUIREMENTS
+TESTING_STANDARDS:
+  connectivity: "Test ThetaData connection before development"
+  strategy_validation: "All abstract methods must be implemented"
+  data_validation: "Verify cached data availability"
+  backtest_required: "Each strategy needs corresponding backtest"
+
+# 📋 DEVELOPMENT WORKFLOW
+WORKFLOW_STEPS:
+  1. "Activate Conda environment: conda activate Alpaca_Options"
+  2. "Test ThetaData connection"
+  3. "Copy base strategy template"
+  4. "Implement required abstract methods"
+  5. "Create corresponding backtest"
+  6. "Test with cached data"
+  7. "Run full backtest with real data"
+
+# 🚫 PROHIBITED ACTIONS
+NEVER_DO:
+  - "Modify core alpaca/ SDK files"
+  - "Use simulated data for backtesting"
+  - "Skip ThetaData connection validation"
+  - "Create strategies without proper inheritance"
+  - "Hardcode API keys or sensitive data"
+
+# ✅ BEST PRACTICES
+RECOMMENDED:
+  - "Keep all working strategy versions"
+  - "Document changes between versions"
+  - "Use descriptive commit messages"
+  - "Include error handling in all strategies"
+  - "Validate data before processing"
+  - "Log all important events and decisions"
+
+# 🔍 DEBUGGING TOOLS
+DEBUG_UTILITIES:
+  - "thetadata/theta_connection/test_theta_integration.py"
+  - "Connection validation in connector.py"
+  - "Strategy logs in strategies/logs/"
+  - "Console output for real-time debugging"
+
+# 📦 DEPENDENCIES
+REQUIRED_PACKAGES:
+  - "requests>=2.30.0"
+  - "pandas>=1.5.3"
+  - "numpy"
+  - "backtrader"
+  - "yfinance"
+  - "python-dotenv"
+
+# 🎨 CODE STYLE
+STYLE_GUIDELINES:
+  - "Follow PEP 8 Python style guide"
+  - "Use type hints where possible"
+  - "Include comprehensive docstrings"
+  - "Keep functions focused and single-purpose"
+  - "Use meaningful variable names"
+
+# 🔐 SECURITY
+SECURITY_RULES:
+  - "Never commit API keys or credentials"
+  - "Use environment variables for sensitive data"
+  - "Store credentials in .env file (gitignored)"
+  - "Validate all external data inputs"
+
+# 📈 PERFORMANCE
+PERFORMANCE_GUIDELINES:
+  - "Use cached data for fast iteration"
+  - "Implement proper error handling"
+  - "Monitor memory usage with large datasets"
+  - "Profile strategy execution times"
