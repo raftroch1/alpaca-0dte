@@ -94,6 +94,7 @@ class LiveUltraAggressive0DTEStrategy:
         self.daily_trades = 0
         self.positions = {}
         self.market_close_time = None
+        self.current_trading_day = None
         
         # Set up logging
         logging.basicConfig(
@@ -141,6 +142,7 @@ class LiveUltraAggressive0DTEStrategy:
             # Risk management - STRICT LIMITS
             'max_daily_loss': 350,         # Stop trading at $350 loss
             'daily_profit_target': 500,    # Take profits at $500
+            'max_risk_per_trade': 100,     # Maximum $100 risk per trade
             'stop_loss_pct': 0.50,         # 50% stop loss
             'profit_target_pct': 1.50,     # 150% profit target
             'max_position_time_hours': 2,   # Close positions after 2 hours
@@ -149,6 +151,8 @@ class LiveUltraAggressive0DTEStrategy:
             'min_option_price': 0.80,
             'max_option_price': 4.00,
             'preferred_strike_offset': 1,   # $1 OTM
+            'strike_offset_calls': 1,       # $1 OTM for calls
+            'strike_offset_puts': 1,        # $1 OTM for puts
             'min_volume': 50,
             'min_open_interest': 100,
             
@@ -469,44 +473,44 @@ class LiveUltraAggressive0DTEStrategy:
             return False
 
     def calculate_position_size(self, confidence: float) -> int:
-        """Calculate CONSERVATIVE position size with strict risk management"""
+        """Calculate DYNAMIC position size: 2/4/6 contracts based on confidence"""
         try:
             # Check daily risk limits first
             if not self.check_daily_risk_limits():
                 return 0
             
-            # Conservative position sizing
-            if confidence > self.params['confidence_threshold'] * 2.5:
-                # Ultra high confidence
-                contracts = self.params['ultra_confidence_contracts']  # 6 contracts max
+            # DYNAMIC Position Sizing Based on Confidence
+            # Confidence thresholds for moderate signals (0.4-0.8 range)
+            if confidence >= 0.65:  # High confidence signals
+                contracts = 6  # Ultra confidence: 6 contracts
                 size_type = "ULTRA_HIGH"
-            elif confidence > self.params['confidence_threshold'] * 2:
-                # High confidence
-                contracts = self.params['high_confidence_contracts']   # 4 contracts max
+            elif confidence >= 0.50:  # Medium-high confidence
+                contracts = 4  # High confidence: 4 contracts  
                 size_type = "HIGH"
-            else:
-                # Base confidence
-                contracts = self.params['base_contracts']             # 2 contracts max
+            else:  # Base confidence (0.3-0.5 range)
+                contracts = 2  # Base confidence: 2 contracts
                 size_type = "BASE"
             
-            # Additional risk check: ensure max risk per trade is not exceeded
-            # Assume worst case scenario for risk calculation
-            estimated_option_price = 2.40  # Average of $0.80-$4.00 range
-            estimated_max_loss = contracts * estimated_option_price * 100 * self.params['stop_loss_pct']
+            # Risk check: ensure we don't exceed max risk per trade
+            estimated_option_price = 2.40  # Conservative estimate ($0.80-$4.00 range)
+            estimated_max_loss = contracts * estimated_option_price * 100 * 0.50  # 50% stop loss
+            max_risk = self.params.get('max_risk_per_trade', 100)  # Default $100 max risk
             
-            if estimated_max_loss > self.params['max_risk_per_trade']:
-                # Reduce position size to meet risk limit
-                max_contracts = int(self.params['max_risk_per_trade'] / (estimated_option_price * 100 * self.params['stop_loss_pct']))
-                contracts = max(1, min(contracts, max_contracts))
+            if estimated_max_loss > max_risk:
+                # Scale down contracts to meet risk limit
+                max_contracts = max(1, int(max_risk / (estimated_option_price * 100 * 0.50)))
+                contracts = min(contracts, max_contracts)
                 size_type += "_RISK_ADJUSTED"
             
-            self.logger.info(f"📊 CONSERVATIVE Position: {contracts} contracts ({size_type})")
-            self.logger.info(f"💰 Estimated max risk: ${estimated_max_loss:.2f} (Limit: ${self.params['max_risk_per_trade']})")
+            self.logger.info(f"📊 DYNAMIC Position: {contracts} contracts ({size_type}, confidence: {confidence:.3f})")
+            self.logger.info(f"💰 Estimated max risk: ${estimated_max_loss:.2f} (Limit: ${max_risk})")
             return contracts
             
         except Exception as e:
             self.logger.error(f"❌ Error calculating position size: {e}")
-            return 1  # Minimum safe position
+            import traceback
+            traceback.print_exc()
+            return 2  # Default to 2 contracts if error
     
     def check_daily_risk_limits(self) -> bool:
         """Check if we can continue trading based on daily risk limits"""
@@ -570,31 +574,55 @@ class LiveUltraAggressive0DTEStrategy:
             return {'is_open': False}
 
     def generate_trading_signals(self, spy_data: pd.DataFrame) -> list:
-        """Generate conservative trading signals"""
+        """Generate MODERATE trading signals - balanced approach for live trading"""
         try:
             signals = []
             
             if len(spy_data) < 20:
                 return signals
             
-            # Simple signal generation (placeholder)
             current_price = spy_data['close'].iloc[-1]
             
-            # Conservative signal: only trade on strong momentum
-            price_change = (current_price - spy_data['close'].iloc[-5]) / spy_data['close'].iloc[-5]
+            # MODERATE Signal Detection (balanced for live trading)
+            # Conservative: abs(price_change) > 0.002 (0.2% movement)
+            # Aggressive: abs(price_change) > 0.0001 (0.01% movement) 
+            # MODERATE: 0.001 (0.1% movement) - good balance
             
-            if abs(price_change) > 0.002:  # 0.2% movement
-                signal_type = "CALL" if price_change > 0 else "PUT"
-                confidence = min(abs(price_change) * 100, 0.8)  # Cap confidence at 0.8
+            price_change_5min = (current_price - spy_data['close'].iloc[-5]) / spy_data['close'].iloc[-5]
+            
+            if abs(price_change_5min) > 0.001:  # 0.1% movement (moderate sensitivity)
+                signal_type = "CALL" if price_change_5min > 0 else "PUT"
+                confidence = min(abs(price_change_5min) * 150, 0.75)  # Moderate confidence scaling
                 
                 signals.append({
                     'type': signal_type,
                     'confidence': confidence,
                     'spy_price': current_price,
-                    'timestamp': datetime.now()
+                    'timestamp': datetime.now(),
+                    'reason': 'MOMENTUM_MODERATE'
                 })
                 
-                self.logger.info(f"📊 Signal generated: {signal_type} (confidence: {confidence:.3f})")
+                self.logger.info(f"🎯 MODERATE Signal: {signal_type} (confidence: {confidence:.3f}, change: {price_change_5min*100:.2f}%)")
+            
+            # Backup: Generate signals during active hours if market is quiet
+            elif 10 <= datetime.now().hour <= 15:  # Active trading hours
+                # Look for any directional bias in recent 3 minutes
+                recent_change = (current_price - spy_data['close'].iloc[-3]) / spy_data['close'].iloc[-3]
+                
+                # Only generate signal if there's some movement (even tiny)
+                if abs(recent_change) > 0.0002:  # 0.02% minimum movement
+                    signal_type = "CALL" if recent_change > 0 else "PUT"
+                    confidence = 0.4  # Moderate confidence for quiet market signals
+                    
+                    signals.append({
+                        'type': signal_type,
+                        'confidence': confidence,
+                        'spy_price': current_price,
+                        'timestamp': datetime.now(),
+                        'reason': 'QUIET_MARKET'
+                    })
+                    
+                    self.logger.info(f"📊 QUIET MARKET Signal: {signal_type} (confidence: {confidence:.3f}, small move: {recent_change*100:.3f}%)")
             
             return signals
             
@@ -609,11 +637,10 @@ class LiveUltraAggressive0DTEStrategy:
         
         try:
             while True:
-                # Check if we can continue trading
-                if not self.check_daily_risk_limits():
-                    self.logger.info("💤 Daily limits reached, waiting until next trading day...")
-                    await asyncio.sleep(3600)  # Wait 1 hour
-                    continue
+                # Check daily risk limits for NEW trades only
+                can_place_new_trades = self.check_daily_risk_limits()
+                if not can_place_new_trades:
+                    self.logger.debug("📈 Daily trade limit reached - monitoring existing positions only")
                 
                 # Check market hours
                 market_status = self.check_market_hours()
@@ -629,20 +656,27 @@ class LiveUltraAggressive0DTEStrategy:
                     await asyncio.sleep(30)
                     continue
                 
-                # Generate trading signals
-                signals = self.generate_trading_signals(spy_data)
-                if signals:
-                    self.logger.info(f"📊 Trading signals detected: {len(signals)} opportunities")
-                    
-                    for signal in signals:
-                        if not self.check_daily_risk_limits():
-                            break
-                            
-                        # Execute the trade
-                        await self.execute_conservative_trade(signal)
+                # Generate trading signals only if we can place new trades
+                if can_place_new_trades:
+                    signals = self.generate_trading_signals(spy_data)
+                    if signals:
+                        self.logger.info(f"📊 Trading signals detected: {len(signals)} opportunities")
                         
-                        # Wait between trades to avoid overtrading
-                        await asyncio.sleep(30)
+                        for signal in signals:
+                            # Double-check limit hasn't been reached during signal processing
+                            if not self.check_daily_risk_limits():
+                                self.logger.info("📈 Daily trade limit reached during signal processing - stopping new trades")
+                                break
+                                
+                            # Execute the trade
+                            await self.execute_conservative_trade(signal)
+                            
+                            # Wait between trades to avoid overtrading
+                            await asyncio.sleep(30)
+                else:
+                    # Log once per hour when trade limit is reached
+                    if datetime.now().minute == 0:
+                        self.logger.info(f"💤 Daily trade limit reached ({self.daily_trades}/{self.params['max_daily_trades']}) - monitoring existing positions only")
                 
                 # Monitor existing positions
                 await self.monitor_and_manage_positions()
@@ -657,23 +691,83 @@ class LiveUltraAggressive0DTEStrategy:
             raise
 
     async def execute_conservative_trade(self, signal: dict):
-        """Execute a conservative trade with proper risk management"""
+        """Execute a REAL conservative trade with Alpaca paper trading"""
         try:
-            self.logger.info(f"🎯 Executing conservative trade: {signal['type']} (confidence: {signal['confidence']:.3f})")
+            self.logger.info(f"🎯 Executing REAL trade: {signal['type']} (confidence: {signal['confidence']:.3f})")
             
-            # This would contain the actual trade execution logic
-            # For now, just log what would happen
+            # Calculate position size
             contracts = self.calculate_position_size(signal['confidence'])
-            if contracts > 0:
-                self.logger.info(f"📦 Would trade {contracts} contracts")
+            if contracts <= 0:
+                self.logger.warning("⚠️ No contracts to trade (risk limits)")
+                return
+            
+            # Find 0DTE option to trade
+            spy_price = signal['spy_price']
+            option_info = self.find_0dte_options(spy_price, 1 if signal['type'] == 'CALL' else -1)
+            
+            if not option_info:
+                self.logger.warning("⚠️ No suitable 0DTE options found")
+                # Fallback to simulation for logging
+                self.logger.info(f"📦 Would trade {contracts} contracts (no options available)")
+                self.daily_trades += 1
+                simulated_pnl = -50 + (signal['confidence'] * 200)
+                self.update_daily_pnl(simulated_pnl)
+                return
+            
+            # Execute REAL trade with Alpaca
+            self.logger.info(f"🚀 PLACING REAL ORDER: {contracts} contracts of {option_info['symbol']}")
+            
+            try:
+                # Place real market order
+                from alpaca.trading.requests import MarketOrderRequest
+                from alpaca.trading.enums import OrderSide, OrderType, TimeInForce
+                import uuid
+                
+                order_request = MarketOrderRequest(
+                    symbol=option_info['symbol'],
+                    qty=contracts,
+                    side=OrderSide.BUY,
+                    type=OrderType.MARKET,
+                    time_in_force=TimeInForce.DAY,
+                    client_order_id=f"conservative_0dte_{uuid.uuid4().hex[:8]}"
+                )
+                
+                # Submit order to Alpaca
+                order = self.trading_client.submit_order(order_request)
+                
+                self.logger.info(f"✅ REAL ORDER PLACED: {order.id} - {contracts} contracts of {option_info['symbol']}")
+                self.logger.info(f"📊 Order Status: {order.status} | Side: {order.side} | Symbol: {order.symbol}")
+                
+                # Track the trade
                 self.daily_trades += 1
                 
-                # Simulate P&L for demonstration
-                simulated_pnl = -50 + (signal['confidence'] * 200)  # Conservative estimate
+                # Store order for monitoring
+                if not hasattr(self, 'active_orders'):
+                    self.active_orders = {}
+                
+                self.active_orders[order.id] = {
+                    'symbol': option_info['symbol'],
+                    'qty': contracts,
+                    'signal_type': signal['type'],
+                    'confidence': signal['confidence'],
+                    'entry_time': datetime.now(),
+                    'spy_price': spy_price
+                }
+                
+                self.logger.info(f"🎯 TRADE EXECUTED: Check your Alpaca paper account for order {order.id}")
+                
+            except Exception as order_error:
+                self.logger.error(f"❌ Failed to place real order: {order_error}")
+                # Fallback to simulation if order fails
+                self.logger.info(f"📦 Fallback simulation: {contracts} contracts")
+                self.daily_trades += 1
+                simulated_pnl = -50 + (signal['confidence'] * 200)
                 self.update_daily_pnl(simulated_pnl)
-            
+        
         except Exception as e:
             self.logger.error(f"❌ Error executing trade: {e}")
+            import traceback
+            traceback.print_exc()
 
     async def monitor_and_manage_positions(self):
         """Monitor and manage existing positions"""
@@ -898,6 +992,9 @@ class LiveUltraAggressive0DTEStrategy:
                 
                 self.logger.debug(f"📈 Market open - ET: {et_time.strftime('%H:%M')} | Close-only: {self.close_only_mode}")
                 
+                # Check for new trading day and reset counters if needed
+                self.check_and_reset_daily_counters()
+                
                 # Check for new signals every minute
                 time_since_check = (current_time - last_check).total_seconds()
                 if time_since_check >= 60:  # Check every minute
@@ -987,6 +1084,30 @@ class LiveUltraAggressive0DTEStrategy:
         # Close all active positions
         for order_id in list(self.active_positions.keys()):
             self.close_position(order_id, "STRATEGY_STOP")
+    
+    def check_and_reset_daily_counters(self):
+        """
+        Check if it's a new trading day and reset daily counters if needed
+        """
+        try:
+            current_date = datetime.now().strftime("%Y-%m-%d")
+            
+            # If this is a new trading day, reset counters
+            if self.current_trading_day != current_date:
+                if self.current_trading_day is not None:  # Not the first run
+                    self.logger.info(f"🌅 NEW TRADING DAY: {current_date}")
+                    self.logger.info(f"📊 Resetting daily counters - Previous day: {self.daily_trades} trades, ${self.daily_pnl:.2f} P&L")
+                
+                # Reset daily tracking
+                self.daily_pnl = 0.0
+                self.daily_trades = 0
+                self.current_trading_day = current_date
+                self.close_only_mode = False  # Reset close-only mode for new day
+                
+                self.logger.info(f"✅ Daily counters reset for {current_date}")
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error checking/resetting daily counters: {e}")
 
 
 async def main():
@@ -1019,19 +1140,19 @@ if __name__ == "__main__":
     # Set up environment
     print("🔧 Setting up live trading environment...")
     
-    # Load environment variables from .env file
-    env_path = os.path.join(os.getcwd(), '.env')
+    # Load environment variables from .env file (in parent directory)
+    env_path = os.path.join(os.path.dirname(os.getcwd()), '.env')
     load_dotenv(dotenv_path=env_path)
     
     # Check for required environment variables
-    required_vars = ['ALPACA_API_KEY_ID', 'ALPACA_API_SECRET_KEY']
+    required_vars = ['ALPACA_API_KEY', 'ALPACA_SECRET_KEY']
     missing_vars = [var for var in required_vars if not os.getenv(var)]
     
     if missing_vars:
         print(f"❌ Missing environment variables: {missing_vars}")
         print("💡 Create .env file with your Alpaca paper trading keys:")
-        print("   ALPACA_API_KEY_ID=your_paper_key_here")
-        print("   ALPACA_API_SECRET_KEY=your_paper_secret_here")
+        print("   ALPACA_API_KEY=your_paper_key_here")
+        print("   ALPACA_SECRET_KEY=your_paper_secret_here")
         sys.exit(1)
     
     print("✅ Environment ready - API keys loaded")

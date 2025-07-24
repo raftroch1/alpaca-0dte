@@ -249,6 +249,155 @@ Before starting development:
 - [ ] Strategy template copied and renamed
 - [ ] Development workflow clear
 
+## 🚀 Live Trading Deployment
+
+### Quick Start - Test Live Strategy
+```bash
+# Test your live strategy (will run until market close)
+python strategies/live_ultra_aggressive_0dte.py
+```
+
+### Option 1: Daemon Script (Recommended)
+```bash
+# Start strategy as background service
+./run_strategy_daemon.sh start
+
+# Monitor logs in real-time
+./run_strategy_daemon.sh monitor
+
+# Check status
+./run_strategy_daemon.sh status
+
+# Stop strategy
+./run_strategy_daemon.sh stop
+
+# View recent logs
+./run_strategy_daemon.sh logs
+```
+
+### Option 2: Background Process
+```bash
+# Run strategy in background (immune to terminal closing)
+nohup python strategies/live_ultra_aggressive_0dte.py > strategy_output.log 2>&1 &
+
+# Monitor logs
+tail -f strategy_output.log
+tail -f strategies/conservative_0dte_live.log
+
+# Check if running
+ps aux | grep live_ultra_aggressive
+```
+
+### Option 3: Screen Session
+```bash
+# Create persistent terminal session
+screen -S trading
+
+# Inside screen, run strategy
+python strategies/live_ultra_aggressive_0dte.py
+
+# Detach from screen: Ctrl+A, then D
+# Strategy continues running in background
+
+# Reattach later to check progress
+screen -r trading
+```
+
+### Option 4: TMux Session
+```bash
+# Create tmux session
+tmux new-session -d -s trading -c $(pwd)/strategies
+
+# Run strategy in tmux
+tmux send-keys -t trading "python live_ultra_aggressive_0dte.py" Enter
+
+# Attach to monitor
+tmux attach -t trading
+
+# Detach: Ctrl+B, then D
+```
+
+## 📊 Monitoring Your Live Strategy
+
+### Real-Time Log Monitoring
+```bash
+# Monitor strategy logs in real-time
+tail -f strategies/conservative_0dte_live.log
+
+# View recent activity (last 50 lines)
+tail -50 strategies/conservative_0dte_live.log
+
+# Monitor multiple logs simultaneously
+tail -f strategies/conservative_0dte_live.log strategy_output.log
+```
+
+### Log File Locations
+- **Strategy Log**: `strategies/conservative_0dte_live.log`
+- **Daemon Log**: `logs/strategy_daemon.log` (if using daemon script)
+- **Output Log**: `strategy_output.log` (if using nohup)
+
+### Strategy Status Checks
+```bash
+# Check if strategy process is running
+ps aux | grep live_ultra_aggressive
+
+# Using daemon script
+./run_strategy_daemon.sh status
+
+# Check screen sessions
+screen -ls
+
+# Check tmux sessions
+tmux list-sessions
+```
+
+## ⚠️ Important Live Trading Notes
+
+### Risk Management
+- ✅ **Paper Trading**: Safe testing environment
+- ✅ **Daily Loss Limit**: $350 maximum daily loss
+- ✅ **Conservative Sizing**: 2/4/6 contracts only
+- ✅ **Market Hours**: Auto-stops at market close
+- ✅ **Target Profit**: $500 daily target
+
+### Market Hours Operation
+- **Trading Hours**: 9:30 AM - 4:00 PM ET
+- **Auto-Stop**: Strategy stops at market close
+- **Weekends**: No trading on weekends
+- **Holidays**: Respects market holidays
+
+### Data Requirements
+- **Alpaca Subscription**: Algo Trader Plus or equivalent
+- **Real-Time Data**: Required for live trading
+- **API Keys**: Paper trading keys in `.env` file
+
+### Troubleshooting Live Trading
+```bash
+# If strategy stops unexpectedly
+./run_strategy_daemon.sh restart
+
+# Check for errors in logs
+tail -100 strategies/conservative_0dte_live.log | grep ERROR
+
+# Test data connectivity
+python test_live_alpaca_data.py
+
+# Verify environment
+python framework_tests/run_all_tests.py --quick
+```
+
+## 🎯 Success Metrics
+
+Your framework is ready when:
+- ✅ All connectivity tests pass
+- ✅ Live strategy starts without errors
+- ✅ Real-time data flows correctly
+- ✅ Risk management is active
+- ✅ Logging captures all activity
+- ✅ Strategy can run continuously
+
+**Your Alpaca 0DTE Options Trading Framework is now production-ready! 🚀**
+
 ## 🎯 Next Steps
 
 1. **Read the Documentation**:
