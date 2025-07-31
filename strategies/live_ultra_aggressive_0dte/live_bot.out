@@ -1,0 +1,207 @@
+2025-07-23 10:24:49,816 - INFO - 🛡️ CONSERVATIVE 0DTE Strategy Initialized
+2025-07-23 10:24:49,816 - INFO - 📊 Target: $500/day | Max Loss: $350/day
+2025-07-23 10:24:49,816 - INFO - 📦 Position Sizes: 2/4/6 contracts
+2025-07-23 10:24:49,816 - INFO - 🚀 Starting CONSERVATIVE 0DTE live trading...
+2025-07-23 10:24:49,816 - INFO - 🛡️ Conservative mode: 2/4/6 contracts, $350 max daily loss
+2025-07-23 10:26:50,133 - INFO - 📊 QUIET MARKET Signal: CALL (confidence: 0.400, small move: 0.037%)
+2025-07-23 10:26:50,135 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 10:26:50,135 - INFO - 🎯 Executing REAL trade: CALL (confidence: 0.400)
+2025-07-23 10:26:50,135 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 10:26:50,136 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 10:26:50,335 - INFO - ✅ Found 0DTE option: SPY250723C00632000 (Strike: $632.0)
+2025-07-23 10:26:50,335 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00632000
+2025-07-23 10:26:50,370 - INFO - ✅ REAL ORDER PLACED: a7438ce5-4090-4e08-8c85-b5332931abe6 - 1 contracts of SPY250723C00632000
+2025-07-23 10:26:50,370 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00632000
+2025-07-23 10:26:50,370 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order a7438ce5-4090-4e08-8c85-b5332931abe6
+2025-07-23 10:30:20,694 - INFO - 📊 QUIET MARKET Signal: CALL (confidence: 0.400, small move: 0.025%)
+2025-07-23 10:30:20,696 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 10:30:20,697 - INFO - 🎯 Executing REAL trade: CALL (confidence: 0.400)
+2025-07-23 10:30:20,697 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 10:30:20,697 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 10:30:20,784 - INFO - ✅ Found 0DTE option: SPY250723C00632000 (Strike: $632.0)
+2025-07-23 10:30:20,784 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00632000
+2025-07-23 10:30:20,808 - INFO - ✅ REAL ORDER PLACED: f2011719-a1b4-4a18-8b85-18c128b203d3 - 1 contracts of SPY250723C00632000
+2025-07-23 10:30:20,809 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00632000
+2025-07-23 10:30:20,809 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order f2011719-a1b4-4a18-8b85-18c128b203d3
+2025-07-23 10:32:50,980 - INFO - 📊 QUIET MARKET Signal: PUT (confidence: 0.400, small move: -0.038%)
+2025-07-23 10:32:50,981 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 10:32:50,981 - INFO - 🎯 Executing REAL trade: PUT (confidence: 0.400)
+2025-07-23 10:32:50,981 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 10:32:50,982 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 10:32:51,120 - INFO - ✅ Found 0DTE option: SPY250723C00630000 (Strike: $630.0)
+2025-07-23 10:32:51,120 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00630000
+2025-07-23 10:32:51,145 - INFO - ✅ REAL ORDER PLACED: 548e318b-9cfa-475b-ae3b-096813d7d520 - 1 contracts of SPY250723C00630000
+2025-07-23 10:32:51,145 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00630000
+2025-07-23 10:32:51,145 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order 548e318b-9cfa-475b-ae3b-096813d7d520
+2025-07-23 10:35:21,304 - INFO - 📊 QUIET MARKET Signal: PUT (confidence: 0.400, small move: -0.063%)
+2025-07-23 10:35:21,305 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 10:35:21,305 - INFO - 🎯 Executing REAL trade: PUT (confidence: 0.400)
+2025-07-23 10:35:21,305 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 10:35:21,305 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 10:35:21,396 - INFO - ✅ Found 0DTE option: SPY250723C00629000 (Strike: $629.0)
+2025-07-23 10:35:21,396 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00629000
+2025-07-23 10:35:21,419 - INFO - ✅ REAL ORDER PLACED: c40aff08-10a1-4a36-a035-294e44066181 - 1 contracts of SPY250723C00629000
+2025-07-23 10:35:21,419 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00629000
+2025-07-23 10:35:21,419 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order c40aff08-10a1-4a36-a035-294e44066181
+2025-07-23 10:37:51,552 - INFO - 📊 QUIET MARKET Signal: CALL (confidence: 0.400, small move: 0.022%)
+2025-07-23 10:37:51,553 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 10:37:51,553 - INFO - 🎯 Executing REAL trade: CALL (confidence: 0.400)
+2025-07-23 10:37:51,553 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 10:37:51,554 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 10:37:51,675 - INFO - ✅ Found 0DTE option: SPY250723C00631000 (Strike: $631.0)
+2025-07-23 10:37:51,675 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00631000
+2025-07-23 10:37:51,702 - INFO - ✅ REAL ORDER PLACED: a6444a7d-12d7-446b-b62f-12c66b546ec2 - 1 contracts of SPY250723C00631000
+2025-07-23 10:37:51,702 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00631000
+2025-07-23 10:37:51,702 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order a6444a7d-12d7-446b-b62f-12c66b546ec2
+2025-07-23 10:40:21,850 - INFO - 📊 QUIET MARKET Signal: CALL (confidence: 0.400, small move: 0.026%)
+2025-07-23 10:40:21,853 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 10:40:21,853 - INFO - 🎯 Executing REAL trade: CALL (confidence: 0.400)
+2025-07-23 10:40:21,853 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 10:40:21,854 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 10:40:21,942 - INFO - ✅ Found 0DTE option: SPY250723C00631000 (Strike: $631.0)
+2025-07-23 10:40:21,942 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00631000
+2025-07-23 10:40:21,965 - INFO - ✅ REAL ORDER PLACED: 7a0930cd-e02b-4c47-a8e1-f61d0d983d26 - 1 contracts of SPY250723C00631000
+2025-07-23 10:40:21,966 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00631000
+2025-07-23 10:40:21,966 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order 7a0930cd-e02b-4c47-a8e1-f61d0d983d26
+2025-07-23 10:43:52,190 - INFO - 📊 QUIET MARKET Signal: CALL (confidence: 0.400, small move: 0.035%)
+2025-07-23 10:43:52,191 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 10:43:52,191 - INFO - 🎯 Executing REAL trade: CALL (confidence: 0.400)
+2025-07-23 10:43:52,192 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 10:43:52,192 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 10:43:52,287 - INFO - ✅ Found 0DTE option: SPY250723C00632000 (Strike: $632.0)
+2025-07-23 10:43:52,288 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00632000
+2025-07-23 10:43:52,312 - INFO - ✅ REAL ORDER PLACED: af9a9ba8-ca96-47d5-a15e-b0bfcd92ef0d - 1 contracts of SPY250723C00632000
+2025-07-23 10:43:52,313 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00632000
+2025-07-23 10:43:52,313 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order af9a9ba8-ca96-47d5-a15e-b0bfcd92ef0d
+2025-07-23 10:45:22,428 - INFO - 📊 QUIET MARKET Signal: PUT (confidence: 0.400, small move: -0.026%)
+2025-07-23 10:45:22,429 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 10:45:22,430 - INFO - 🎯 Executing REAL trade: PUT (confidence: 0.400)
+2025-07-23 10:45:22,430 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 10:45:22,430 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 10:45:22,507 - INFO - ✅ Found 0DTE option: SPY250723C00629000 (Strike: $629.0)
+2025-07-23 10:45:22,507 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00629000
+2025-07-23 10:45:22,532 - INFO - ✅ REAL ORDER PLACED: 1c139d6d-0d07-4634-88a0-cd3dd9124d83 - 1 contracts of SPY250723C00629000
+2025-07-23 10:45:22,532 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00629000
+2025-07-23 10:45:22,532 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order 1c139d6d-0d07-4634-88a0-cd3dd9124d83
+2025-07-23 10:47:52,689 - INFO - 📊 QUIET MARKET Signal: CALL (confidence: 0.400, small move: 0.021%)
+2025-07-23 10:47:52,691 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 10:47:52,692 - INFO - 🎯 Executing REAL trade: CALL (confidence: 0.400)
+2025-07-23 10:47:52,692 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 10:47:52,692 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 10:47:52,773 - INFO - ✅ Found 0DTE option: SPY250723C00631000 (Strike: $631.0)
+2025-07-23 10:47:52,773 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00631000
+2025-07-23 10:47:52,797 - INFO - ✅ REAL ORDER PLACED: 489917b0-8d8b-4caf-8e1d-2241734636fa - 1 contracts of SPY250723C00631000
+2025-07-23 10:47:52,798 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00631000
+2025-07-23 10:47:52,798 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order 489917b0-8d8b-4caf-8e1d-2241734636fa
+2025-07-23 10:50:23,007 - INFO - 📊 QUIET MARKET Signal: PUT (confidence: 0.400, small move: -0.022%)
+2025-07-23 10:50:23,009 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 10:50:23,010 - INFO - 🎯 Executing REAL trade: PUT (confidence: 0.400)
+2025-07-23 10:50:23,010 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 10:50:23,010 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 10:50:23,101 - INFO - ✅ Found 0DTE option: SPY250723C00629000 (Strike: $629.0)
+2025-07-23 10:50:23,102 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00629000
+2025-07-23 10:50:23,127 - INFO - ✅ REAL ORDER PLACED: 8f4fe774-ce25-4f12-b12a-36b524f20cc2 - 1 contracts of SPY250723C00629000
+2025-07-23 10:50:23,128 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00629000
+2025-07-23 10:50:23,128 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order 8f4fe774-ce25-4f12-b12a-36b524f20cc2
+2025-07-23 10:55:53,432 - INFO - 📊 QUIET MARKET Signal: CALL (confidence: 0.400, small move: 0.024%)
+2025-07-23 10:55:53,435 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 10:55:53,435 - INFO - 🎯 Executing REAL trade: CALL (confidence: 0.400)
+2025-07-23 10:55:53,435 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 10:55:53,435 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 10:55:53,535 - INFO - ✅ Found 0DTE option: SPY250723C00632000 (Strike: $632.0)
+2025-07-23 10:55:53,535 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00632000
+2025-07-23 10:55:53,560 - INFO - ✅ REAL ORDER PLACED: c62632a0-6735-4053-9176-397eda27b34e - 1 contracts of SPY250723C00632000
+2025-07-23 10:55:53,560 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00632000
+2025-07-23 10:55:53,561 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order c62632a0-6735-4053-9176-397eda27b34e
+2025-07-23 10:58:23,714 - INFO - 📊 QUIET MARKET Signal: CALL (confidence: 0.400, small move: 0.023%)
+2025-07-23 10:58:23,714 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 10:58:23,715 - INFO - 🎯 Executing REAL trade: CALL (confidence: 0.400)
+2025-07-23 10:58:23,715 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 10:58:23,715 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 10:58:23,789 - INFO - ✅ Found 0DTE option: SPY250723C00632000 (Strike: $632.0)
+2025-07-23 10:58:23,789 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00632000
+2025-07-23 10:58:23,814 - INFO - ✅ REAL ORDER PLACED: 4b9d2d2f-d4d6-4908-bf37-0e7c548ef2c4 - 1 contracts of SPY250723C00632000
+2025-07-23 10:58:23,814 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00632000
+2025-07-23 10:58:23,815 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order 4b9d2d2f-d4d6-4908-bf37-0e7c548ef2c4
+2025-07-23 11:01:54,015 - INFO - 📊 QUIET MARKET Signal: CALL (confidence: 0.400, small move: 0.025%)
+2025-07-23 11:01:54,017 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 11:01:54,018 - INFO - 🎯 Executing REAL trade: CALL (confidence: 0.400)
+2025-07-23 11:01:54,018 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 11:01:54,018 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 11:01:54,096 - INFO - ✅ Found 0DTE option: SPY250723C00632000 (Strike: $632.0)
+2025-07-23 11:01:54,096 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00632000
+2025-07-23 11:01:54,121 - INFO - ✅ REAL ORDER PLACED: c8245af4-c55f-4319-b5b0-ce4ab31d41be - 1 contracts of SPY250723C00632000
+2025-07-23 11:01:54,121 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00632000
+2025-07-23 11:01:54,121 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order c8245af4-c55f-4319-b5b0-ce4ab31d41be
+2025-07-23 11:04:24,285 - INFO - 📊 QUIET MARKET Signal: PUT (confidence: 0.400, small move: -0.040%)
+2025-07-23 11:04:24,287 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 11:04:24,287 - INFO - 🎯 Executing REAL trade: PUT (confidence: 0.400)
+2025-07-23 11:04:24,287 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 11:04:24,287 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 11:04:24,392 - INFO - ✅ Found 0DTE option: SPY250723C00630000 (Strike: $630.0)
+2025-07-23 11:04:24,392 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00630000
+2025-07-23 11:04:24,416 - INFO - ✅ REAL ORDER PLACED: 94305bde-d614-42b8-94ee-6572314883de - 1 contracts of SPY250723C00630000
+2025-07-23 11:04:24,416 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00630000
+2025-07-23 11:04:24,417 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order 94305bde-d614-42b8-94ee-6572314883de
+2025-07-23 11:05:54,531 - INFO - 📊 QUIET MARKET Signal: PUT (confidence: 0.400, small move: -0.027%)
+2025-07-23 11:05:54,533 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 11:05:54,533 - INFO - 🎯 Executing REAL trade: PUT (confidence: 0.400)
+2025-07-23 11:05:54,533 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 11:05:54,533 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 11:05:54,613 - INFO - ✅ Found 0DTE option: SPY250723C00630000 (Strike: $630.0)
+2025-07-23 11:05:54,613 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00630000
+2025-07-23 11:05:54,640 - INFO - ✅ REAL ORDER PLACED: 4e8497f1-3496-4341-ba3e-60f70ddb73fe - 1 contracts of SPY250723C00630000
+2025-07-23 11:05:54,640 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00630000
+2025-07-23 11:05:54,640 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order 4e8497f1-3496-4341-ba3e-60f70ddb73fe
+2025-07-23 11:08:24,818 - INFO - 📊 QUIET MARKET Signal: CALL (confidence: 0.400, small move: 0.029%)
+2025-07-23 11:08:24,821 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 11:08:24,822 - INFO - 🎯 Executing REAL trade: CALL (confidence: 0.400)
+2025-07-23 11:08:24,822 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 11:08:24,822 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 11:08:24,923 - INFO - ✅ Found 0DTE option: SPY250723C00632000 (Strike: $632.0)
+2025-07-23 11:08:24,924 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00632000
+2025-07-23 11:08:24,948 - INFO - ✅ REAL ORDER PLACED: 2d201764-c3d6-43a6-b4cf-bcc48b55f4d8 - 1 contracts of SPY250723C00632000
+2025-07-23 11:08:24,948 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00632000
+2025-07-23 11:08:24,948 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order 2d201764-c3d6-43a6-b4cf-bcc48b55f4d8
+2025-07-23 11:14:55,366 - INFO - 📊 QUIET MARKET Signal: PUT (confidence: 0.400, small move: -0.032%)
+2025-07-23 11:14:55,369 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 11:14:55,370 - INFO - 🎯 Executing REAL trade: PUT (confidence: 0.400)
+2025-07-23 11:14:55,370 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 11:14:55,370 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 11:14:55,472 - INFO - ✅ Found 0DTE option: SPY250723C00630000 (Strike: $630.0)
+2025-07-23 11:14:55,472 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00630000
+2025-07-23 11:14:55,498 - INFO - ✅ REAL ORDER PLACED: 1d42ce14-5f83-4a31-b4e5-b58e5ce82aa6 - 1 contracts of SPY250723C00630000
+2025-07-23 11:14:55,498 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00630000
+2025-07-23 11:14:55,498 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order 1d42ce14-5f83-4a31-b4e5-b58e5ce82aa6
+2025-07-23 11:18:25,720 - INFO - 📊 QUIET MARKET Signal: PUT (confidence: 0.400, small move: -0.030%)
+2025-07-23 11:18:25,721 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 11:18:25,722 - INFO - 🎯 Executing REAL trade: PUT (confidence: 0.400)
+2025-07-23 11:18:25,722 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 11:18:25,723 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 11:18:25,803 - INFO - ✅ Found 0DTE option: SPY250723C00629000 (Strike: $629.0)
+2025-07-23 11:18:25,803 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00629000
+2025-07-23 11:18:25,834 - INFO - ✅ REAL ORDER PLACED: 57f8977e-50d4-4b59-a17d-b8d9f3f58f45 - 1 contracts of SPY250723C00629000
+2025-07-23 11:18:25,835 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00629000
+2025-07-23 11:18:25,835 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order 57f8977e-50d4-4b59-a17d-b8d9f3f58f45
+2025-07-23 11:19:55,951 - INFO - 📊 QUIET MARKET Signal: PUT (confidence: 0.400, small move: -0.023%)
+2025-07-23 11:19:55,953 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 11:19:55,953 - INFO - 🎯 Executing REAL trade: PUT (confidence: 0.400)
+2025-07-23 11:19:55,953 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 11:19:55,953 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 11:19:56,027 - INFO - ✅ Found 0DTE option: SPY250723C00629000 (Strike: $629.0)
+2025-07-23 11:19:56,027 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00629000
+2025-07-23 11:19:56,050 - INFO - ✅ REAL ORDER PLACED: c7a84a9c-fed2-43c6-9599-94f00c2eb736 - 1 contracts of SPY250723C00629000
+2025-07-23 11:19:56,050 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00629000
+2025-07-23 11:19:56,051 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order c7a84a9c-fed2-43c6-9599-94f00c2eb736
+2025-07-23 11:21:26,171 - INFO - 📊 QUIET MARKET Signal: CALL (confidence: 0.400, small move: 0.040%)
+2025-07-23 11:21:26,172 - INFO - 📊 Trading signals detected: 1 opportunities
+2025-07-23 11:21:26,172 - INFO - 🎯 Executing REAL trade: CALL (confidence: 0.400)
+2025-07-23 11:21:26,172 - INFO - 📊 DYNAMIC Position: 1 contracts (BASE_RISK_ADJUSTED, confidence: 0.400)
+2025-07-23 11:21:26,172 - INFO - 💰 Estimated max risk: $240.00 (Limit: $100)
+2025-07-23 11:21:26,264 - INFO - ✅ Found 0DTE option: SPY250723C00632000 (Strike: $632.0)
+2025-07-23 11:21:26,265 - INFO - 🚀 PLACING REAL ORDER: 1 contracts of SPY250723C00632000
+2025-07-23 11:21:26,293 - INFO - ✅ REAL ORDER PLACED: 5f9bf914-55c7-4a76-b04c-80215e169cdf - 1 contracts of SPY250723C00632000
+2025-07-23 11:21:26,294 - INFO - 📊 Order Status: OrderStatus.PENDING_NEW | Side: OrderSide.BUY | Symbol: SPY250723C00632000
+2025-07-23 11:21:26,294 - INFO - 🎯 TRADE EXECUTED: Check your Alpaca paper account for order 5f9bf914-55c7-4a76-b04c-80215e169cdf
+2025-07-23 11:22:56,299 - WARNING - 📈 Daily trade limit reached: 20/20
+2025-07-23 11:22:56,302 - INFO - 💤 Daily limits reached, waiting until next trading day...
