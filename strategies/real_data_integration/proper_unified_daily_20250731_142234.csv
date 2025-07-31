@@ -1,0 +1,88 @@
+date,trade_executed,strategy_used,pnl,spy_close,trade_details
+20240301,True,primary,35.000000000007276,512.71,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 513.0, 'premium': 0.51, 'gross_premium': 102.0, 'total_costs': 8.0, 'net_premium': 94.0, 'spy_close': 512.71, 'final_pnl': 35.000000000007276, 'outcome': 'ASSIGNED'}"
+20240304,True,primary,14.0,512.3,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 512.0, 'premium': 0.11, 'gross_premium': 22.0, 'total_costs': 8.0, 'net_premium': 14.0, 'spy_close': 512.3, 'final_pnl': 14.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240305,False,,0.0,505.36,
+20240306,False,,0.0,509.35,
+20240307,False,,0.0,515.015,
+20240308,True,primary,-78.99999999999545,511.6,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 512.0, 'premium': 0.05, 'gross_premium': 10.0, 'total_costs': 8.0, 'net_premium': 2.0, 'spy_close': 511.6, 'final_pnl': -78.99999999999545, 'outcome': 'ASSIGNED'}"
+20240311,True,counter,-1.0,511.13,"{'strategy': 'closer_atm_put', 'strike': 511.0, 'premium': 0.02, 'final_pnl': -1.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240312,True,primary,5.0000000000081855,516.83,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 517.0, 'premium': 0.24, 'gross_premium': 48.0, 'total_costs': 8.0, 'net_premium': 40.0, 'spy_close': 516.83, 'final_pnl': 5.0000000000081855, 'outcome': 'ASSIGNED'}"
+20240313,True,counter,-4.4999999999972715,515.97,"{'strategy': 'closer_atm_put', 'strike': 516.0, 'premium': 0.02, 'final_pnl': -4.4999999999972715, 'outcome': 'ASSIGNED'}"
+20240314,False,,0.0,514.02,
+20240315,True,primary,-48.99999999999545,509.6,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 510.0, 'premium': 0.2, 'gross_premium': 40.0, 'total_costs': 8.0, 'net_premium': 32.0, 'spy_close': 509.6, 'final_pnl': -48.99999999999545, 'outcome': 'ASSIGNED'}"
+20240318,True,primary,52.00000000000273,512.985,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 513.0, 'premium': 0.32, 'gross_premium': 64.0, 'total_costs': 8.0, 'net_premium': 56.0, 'spy_close': 512.985, 'final_pnl': 52.00000000000273, 'outcome': 'ASSIGNED'}"
+20240319,True,primary,19.000000000007276,515.71,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 516.0, 'premium': 0.43, 'gross_premium': 86.0, 'total_costs': 8.0, 'net_premium': 78.0, 'spy_close': 515.71, 'final_pnl': 19.000000000007276, 'outcome': 'ASSIGNED'}"
+20240320,False,,0.0,519.46,
+20240321,False,,0.0,522.36,
+20240322,True,primary,4.0,521.21,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 521.0, 'premium': 0.06, 'gross_premium': 12.0, 'total_costs': 8.0, 'net_premium': 4.0, 'spy_close': 521.21, 'final_pnl': 4.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240325,True,primary,-19.000000000003638,519.77,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 520.0, 'premium': 0.18, 'gross_premium': 36.0, 'total_costs': 8.0, 'net_premium': 28.0, 'spy_close': 519.77, 'final_pnl': -19.000000000003638, 'outcome': 'ASSIGNED'}"
+20240326,True,primary,87.00000000000728,519.71,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 520.0, 'premium': 0.77, 'gross_premium': 154.0, 'total_costs': 8.0, 'net_premium': 146.0, 'spy_close': 519.71, 'final_pnl': 87.00000000000728, 'outcome': 'ASSIGNED'}"
+20240327,True,counter,-23.50000000000273,522.78,"{'strategy': 'closer_atm_put', 'strike': 523.0, 'premium': 0.02, 'final_pnl': -23.50000000000273, 'outcome': 'ASSIGNED'}"
+20240328,True,counter,-1.0,523.07,"{'strategy': 'closer_atm_put', 'strike': 523.0, 'premium': 0.02, 'final_pnl': -1.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240401,False,,0.0,522.16,
+20240402,False,,0.0,518.75,
+20240403,True,primary,-97.00000000000637,519.41,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 520.0, 'premium': 0.15, 'gross_premium': 30.0, 'total_costs': 8.0, 'net_premium': 22.0, 'spy_close': 519.41, 'final_pnl': -97.00000000000637, 'outcome': 'ASSIGNED'}"
+20240404,True,primary,274.0,515.32,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 515.0, 'premium': 1.41, 'gross_premium': 282.0, 'total_costs': 8.0, 'net_premium': 274.0, 'spy_close': 515.32, 'final_pnl': 274.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240405,True,primary,2.0,518.48,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 518.0, 'premium': 0.05, 'gross_premium': 10.0, 'total_costs': 8.0, 'net_premium': 2.0, 'spy_close': 518.48, 'final_pnl': 2.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240408,True,counter,25.999999999997275,518.72,"{'strategy': 'bear_put_spread', 'long_strike': 520.0, 'short_strike': 518.0, 'net_cost': 0.96, 'final_pnl': 25.999999999997275, 'outcome': 'PARTIAL_PROFIT'}"
+20240409,False,,0.0,518.5401,
+20240410,True,primary,-13.000000000006365,512.91,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 513.0, 'premium': 0.07, 'gross_premium': 14.000000000000002, 'total_costs': 8.0, 'net_premium': 6.000000000000002, 'spy_close': 512.91, 'final_pnl': -13.000000000006365, 'outcome': 'ASSIGNED'}"
+20240411,True,primary,148.99999999999,518.93,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 519.0, 'premium': 0.86, 'gross_premium': 172.0, 'total_costs': 8.0, 'net_premium': 164.0, 'spy_close': 518.93, 'final_pnl': 148.99999999999, 'outcome': 'ASSIGNED'}"
+20240412,True,primary,-38.99999999999454,510.72,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 511.0, 'premium': 0.13, 'gross_premium': 26.0, 'total_costs': 8.0, 'net_premium': 18.0, 'spy_close': 510.72, 'final_pnl': -38.99999999999454, 'outcome': 'ASSIGNED'}"
+20240415,True,primary,356.0,506.29,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 506.0, 'premium': 1.82, 'gross_premium': 364.0, 'total_costs': 8.0, 'net_premium': 356.0, 'spy_close': 506.29, 'final_pnl': 356.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240416,True,counter,1.0,503.005,"{'strategy': 'closer_atm_put', 'strike': 503.0, 'premium': 0.04, 'final_pnl': 1.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240417,True,primary,251.0000000000041,501.79,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 502.0, 'premium': 1.51, 'gross_premium': 302.0, 'total_costs': 8.0, 'net_premium': 294.0, 'spy_close': 501.79, 'final_pnl': 251.0000000000041, 'outcome': 'ASSIGNED'}"
+20240418,True,primary,44.99999999999727,499.89,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 500.0, 'premium': 0.38, 'gross_premium': 76.0, 'total_costs': 8.0, 'net_premium': 68.0, 'spy_close': 499.89, 'final_pnl': 44.99999999999727, 'outcome': 'ASSIGNED'}"
+20240419,True,primary,162.0,496.425,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 496.0, 'premium': 0.85, 'gross_premium': 170.0, 'total_costs': 8.0, 'net_premium': 162.0, 'spy_close': 496.425, 'final_pnl': 162.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240422,True,primary,136.0,500.61,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 500.0, 'premium': 0.72, 'gross_premium': 144.0, 'total_costs': 8.0, 'net_premium': 136.0, 'spy_close': 500.61, 'final_pnl': 136.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240423,False,,0.0,505.05,
+20240424,False,,0.0,505.41,
+20240425,False,,0.0,502.56,
+20240426,True,counter,-9.999999999999094,508.26,"{'strategy': 'bear_put_spread', 'long_strike': 509.0, 'short_strike': 507.0, 'net_cost': 0.78, 'final_pnl': -9.999999999999094, 'outcome': 'PARTIAL_PROFIT'}"
+20240429,True,primary,6.000000000000002,510.06,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 510.0, 'premium': 0.07, 'gross_premium': 14.000000000000002, 'total_costs': 8.0, 'net_premium': 6.000000000000002, 'spy_close': 510.06, 'final_pnl': 6.000000000000002, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240430,True,counter,109.00000000000001,503.6,"{'strategy': 'closer_atm_put', 'strike': 503.0, 'premium': 1.12, 'final_pnl': 109.00000000000001, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240501,True,counter,607.0,507.25,"{'strategy': 'closer_atm_put', 'strike': 507.0, 'premium': 6.1, 'final_pnl': 607.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240502,True,primary,7.999999999997257,504.515,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 505.0, 'premium': 0.57, 'gross_premium': 113.99999999999999, 'total_costs': 8.0, 'net_premium': 105.99999999999999, 'spy_close': 504.515, 'final_pnl': 7.999999999997257, 'outcome': 'ASSIGNED'}"
+20240503,True,counter,49.99999999999977,511.31,"{'strategy': 'bear_put_spread', 'long_strike': 512.0, 'short_strike': 510.0, 'net_cost': 0.13, 'final_pnl': 49.99999999999977, 'outcome': 'PARTIAL_PROFIT'}"
+20240506,False,,0.0,516.57,
+20240507,False,,0.0,517.14,
+20240508,False,,0.0,517.0,
+20240509,False,,0.0,520.17,
+20240510,False,,0.0,520.84,
+20240513,False,,0.0,520.91,
+20240514,True,counter,-1.0,523.3,"{'strategy': 'closer_atm_put', 'strike': 523.0, 'premium': 0.02, 'final_pnl': -1.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240515,True,primary,111.00000000001091,529.69,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 530.0, 'premium': 0.91, 'gross_premium': 182.0, 'total_costs': 8.0, 'net_premium': 174.0, 'spy_close': 529.69, 'final_pnl': 111.00000000001091, 'outcome': 'ASSIGNED'}"
+20240516,True,primary,49.000000000010914,528.69,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 529.0, 'premium': 0.6, 'gross_premium': 120.0, 'total_costs': 8.0, 'net_premium': 112.0, 'spy_close': 528.69, 'final_pnl': 49.000000000010914, 'outcome': 'ASSIGNED'}"
+20240517,False,,0.0,529.45,
+20240520,True,primary,48.00000000000001,530.06,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 530.0, 'premium': 0.28, 'gross_premium': 56.00000000000001, 'total_costs': 8.0, 'net_premium': 48.00000000000001, 'spy_close': 530.06, 'final_pnl': 48.00000000000001, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240521,True,counter,-21.000000000001368,531.36,"{'strategy': 'bear_put_spread', 'long_strike': 532.0, 'short_strike': 530.0, 'net_cost': 0.79, 'final_pnl': -21.000000000001368, 'outcome': 'PARTIAL_PROFIT'}"
+20240522,True,primary,226.0,529.83,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 529.0, 'premium': 1.17, 'gross_premium': 234.0, 'total_costs': 8.0, 'net_premium': 226.0, 'spy_close': 529.83, 'final_pnl': 226.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240523,True,primary,24.0,526.1,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 526.0, 'premium': 0.16, 'gross_premium': 32.0, 'total_costs': 8.0, 'net_premium': 24.0, 'spy_close': 526.1, 'final_pnl': 24.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240524,False,,0.0,529.44,
+20240528,False,,0.0,529.81,
+20240529,True,primary,120.0,526.1,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 526.0, 'premium': 0.64, 'gross_premium': 128.0, 'total_costs': 8.0, 'net_premium': 120.0, 'spy_close': 526.1, 'final_pnl': 120.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240530,True,primary,133.00000000000276,522.61,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 523.0, 'premium': 1.1, 'gross_premium': 220.00000000000003, 'total_costs': 8.0, 'net_premium': 212.00000000000003, 'spy_close': 522.61, 'final_pnl': 133.00000000000276, 'outcome': 'ASSIGNED'}"
+20240531,True,primary,14.0,527.08,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 527.0, 'premium': 0.11, 'gross_premium': 22.0, 'total_costs': 8.0, 'net_premium': 14.0, 'spy_close': 527.08, 'final_pnl': 14.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240603,False,,0.0,527.8,
+20240604,False,,0.0,528.39,
+20240605,False,,0.0,534.67,
+20240606,True,primary,48.99999999999363,534.66,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 535.0, 'premium': 0.63, 'gross_premium': 126.0, 'total_costs': 8.0, 'net_premium': 118.0, 'spy_close': 534.66, 'final_pnl': 48.99999999999363, 'outcome': 'ASSIGNED'}"
+20240607,False,,0.0,534.01,
+20240610,False,,0.0,535.66,
+20240611,True,primary,1.000000000009095,536.95,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 537.0, 'premium': 0.1, 'gross_premium': 20.0, 'total_costs': 8.0, 'net_premium': 12.0, 'spy_close': 536.95, 'final_pnl': 1.000000000009095, 'outcome': 'ASSIGNED'}"
+20240612,True,primary,16.0,541.36,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 541.0, 'premium': 0.12, 'gross_premium': 24.0, 'total_costs': 8.0, 'net_premium': 16.0, 'spy_close': 541.36, 'final_pnl': 16.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240613,True,counter,-1.0,542.45,"{'strategy': 'closer_atm_put', 'strike': 542.0, 'premium': 0.02, 'final_pnl': -1.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240614,True,primary,61.00000000000455,542.85,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 543.0, 'premium': 0.5, 'gross_premium': 100.0, 'total_costs': 8.0, 'net_premium': 92.0, 'spy_close': 542.85, 'final_pnl': 61.00000000000455, 'outcome': 'ASSIGNED'}"
+20240617,True,primary,40.0,547.1,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 547.0, 'premium': 0.24, 'gross_premium': 48.0, 'total_costs': 8.0, 'net_premium': 40.0, 'spy_close': 547.1, 'final_pnl': 40.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240618,True,primary,-18.99999999999818,548.49,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 549.0, 'premium': 0.46, 'gross_premium': 92.0, 'total_costs': 8.0, 'net_premium': 84.0, 'spy_close': 548.49, 'final_pnl': -18.99999999999818, 'outcome': 'ASSIGNED'}"
+20240620,True,primary,62.0,547.17,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 547.0, 'premium': 0.35, 'gross_premium': 70.0, 'total_costs': 8.0, 'net_premium': 62.0, 'spy_close': 547.17, 'final_pnl': 62.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240621,False,,0.0,544.51,
+20240624,False,,0.0,542.74,
+20240625,True,primary,15.000000000008178,544.83,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 545.0, 'premium': 0.29, 'gross_premium': 57.99999999999999, 'total_costs': 8.0, 'net_premium': 49.99999999999999, 'spy_close': 544.83, 'final_pnl': 15.000000000008178, 'outcome': 'ASSIGNED'}"
+20240626,False,,0.0,545.51,
+20240627,False,,0.0,546.37,
+20240628,False,,0.0,544.22,
+20240701,True,primary,2.0,545.34,"{'strategy': 'balanced_minimal_scale_put_sale', 'contracts': 2, 'strike': 545.0, 'premium': 0.05, 'gross_premium': 10.0, 'total_costs': 8.0, 'net_premium': 2.0, 'spy_close': 545.34, 'final_pnl': 2.0, 'outcome': 'EXPIRED_WORTHLESS'}"
+20240702,False,,0.0,549.01,
+20240703,False,,0.0,551.46,
+20240705,False,,0.0,554.64,
