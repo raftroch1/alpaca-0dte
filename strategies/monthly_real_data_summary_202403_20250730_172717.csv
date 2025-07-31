@@ -1,0 +1,2 @@
+year,month,trading_days_processed,trading_days_failed,total_monthly_pnl,total_monthly_trades,avg_daily_pnl,avg_trades_per_day,avg_pnl_per_trade,success_rate
+2024,3,20,0,-1793.7867396874562,196,-89.68933698437282,9.8,-9.151973161670695,100.0

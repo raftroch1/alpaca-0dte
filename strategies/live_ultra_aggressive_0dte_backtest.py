@@ -60,37 +60,48 @@ class LiveUltraAggressive0DTEBacktest:
         self.winning_trades = 0
         self.total_pnl = 0.0
         
+        # Signal timing control (like live strategy)
+        self.last_signal_time = None
+        self.min_time_between_signals = 60  # 60 seconds like live strategy
+        
         # Set up logging
         self.setup_logging()
         
         print(f"🎯 BACKTEST: Live Ultra Aggressive 0DTE Strategy")
         print(f"📊 Parameters: EXACT match to live strategy")
         print(f"📁 Cache directory: {self.cache_dir}")
-        print(f"🎲 Signal threshold: {self.params['signal_threshold']*100:.1f}% movement")
+        print(f"🎯 Signal generation: Multi-factor technical analysis (confidence threshold: {self.params['confidence_threshold']})")
         print(f"📦 Position sizes: {self.params['base_contracts']}/{self.params['high_confidence_contracts']}/{self.params['ultra_confidence_contracts']} contracts")
         print(f"💰 Risk limits: ${self.params['max_risk_per_trade']}/trade, ${self.params['max_daily_loss']}/day")
     
     def get_conservative_parameters(self) -> dict:
         """
-        EXACT COPY of parameters from live_ultra_aggressive_0dte.py
+        EXACT COPY of parameters from live_ultra_aggressive_0dte.py 
         These must match the live strategy exactly for accurate backtesting
         """
         return {
-            # Signal detection - MODERATE SETTINGS (matches live)
-            'signal_threshold': 0.001,  # 0.1% price movement
+            # Core signal parameters (EXACT MATCH to live strategy)
             'confidence_threshold': 0.20,
-            'volume_threshold': 1000000,
-            'min_signal_strength': 0.15,
+            'min_signal_score': 3,
+            'bull_momentum_threshold': 0.001,
+            'bear_momentum_threshold': 0.001,
+            'volume_threshold': 1.5,
+            'min_volume_ratio': 1.5,  # Same as volume_threshold
+            'momentum_weight': 4,
+            'max_daily_trades': 20,
+            'sample_frequency_minutes': 1,
             
-            # Market timing
-            'market_open_hour': 9,
-            'market_open_minute': 30,
-            'market_close_hour': 16,
-            'market_close_minute': 0,
-            'stop_trading_hour': 15,
-            'stop_trading_minute': 55,
+            # Enhanced technical indicators (EXACT MATCH)
+            'ema_fast': 6,
+            'ema_slow': 18,
+            'sma_period': 15,
+            'rsi_oversold': 40,
+            'rsi_overbought': 60,
+            'technical_weight': 3,
+            'volume_weight': 3,
+            'pattern_weight': 2,
             
-            # Position sizing - EXACT MATCH
+            # CONSERVATIVE Position sizing (EXACT MATCH)
             'base_contracts': 2,
             'high_confidence_contracts': 4,
             'ultra_confidence_contracts': 6,
@@ -98,24 +109,25 @@ class LiveUltraAggressive0DTEBacktest:
             # Risk management - EXACT MATCH
             'max_daily_loss': 350,
             'daily_profit_target': 500,
+            'max_risk_per_trade': 100,
             'stop_loss_pct': 0.50,
             'profit_target_pct': 1.50,
             'max_position_time_hours': 2,
-            'max_risk_per_trade': 100,
             
             # Option selection - EXACT MATCH
             'min_option_price': 0.80,
             'max_option_price': 4.00,
-            'preferred_strike_offset': 1,   # $1 OTM
-            'strike_offset_calls': 1,       # $1 OTM for calls
-            'strike_offset_puts': 1,        # $1 OTM for puts
+            'preferred_strike_offset': 1,
+            'strike_offset_calls': 1,
+            'strike_offset_puts': 1,
             'min_volume': 50,
             'min_open_interest': 100,
             
-            # Execution
-            'max_concurrent_positions': 3,
-            'min_time_between_trades': 120,  # 2 minutes
-            'max_daily_trades': 20,  # EXACT MATCH to live strategy
+            # Market timing - EXACT MATCH  
+            'start_trading_time': "09:35",
+            'stop_new_positions_time': "15:15",
+            'close_only_time': "15:30",
+            'force_close_time': "15:45"
         }
     
     def setup_logging(self):
@@ -167,67 +179,253 @@ class LiveUltraAggressive0DTEBacktest:
     def is_market_hours(self, timestamp: datetime) -> bool:
         """Check if timestamp is during market hours (EXACT match to live strategy)"""
         market_time = timestamp.time()
-        market_open = time(self.params['market_open_hour'], self.params['market_open_minute'])
-        market_close = time(self.params['market_close_hour'], self.params['market_close_minute'])
+        
+        # Parse time strings from parameters
+        start_time_str = self.params['start_trading_time']  # "09:35"
+        close_time_str = self.params['force_close_time']    # "15:45"
+        
+        start_hour, start_minute = map(int, start_time_str.split(':'))
+        close_hour, close_minute = map(int, close_time_str.split(':'))
+        
+        market_open = time(start_hour, start_minute)
+        market_close = time(close_hour, close_minute)
         
         return market_open <= market_time <= market_close
     
+    def calculate_technical_indicators(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Calculate enhanced technical indicators for signal generation - EXACT COPY from live strategy"""
+        try:
+            if df.empty or len(df) < self.params['sma_period']:
+                return df
+            
+            # Price and volume columns
+            df['close'] = df['close'].astype(float)
+            df['volume'] = df['volume'].astype(float)
+            
+            # Multiple timeframe momentum
+            df['momentum_1min'] = df['close'].pct_change(periods=1)
+            df['momentum_5min'] = df['close'].pct_change(periods=5)
+            df['momentum_10min'] = df['close'].pct_change(periods=10)
+            
+            # Enhanced moving averages
+            df['ema_fast'] = df['close'].ewm(span=self.params['ema_fast']).mean()
+            df['ema_slow'] = df['close'].ewm(span=self.params['ema_slow']).mean()
+            df['sma_trend'] = df['close'].rolling(window=self.params['sma_period']).mean()
+            
+            # RSI calculation
+            def calculate_rsi(prices, period=14):
+                delta = prices.diff()
+                gain = (delta.where(delta > 0, 0)).rolling(window=period).mean()
+                loss = (-delta.where(delta < 0, 0)).rolling(window=period).mean()
+                rs = gain / loss
+                return 100 - (100 / (1 + rs))
+            
+            df['rsi_14'] = calculate_rsi(df['close'], 14)
+            df['rsi_9'] = calculate_rsi(df['close'], 9)
+            
+            # Volume analysis
+            df['volume_sma'] = df['volume'].rolling(window=20).mean()
+            df['volume_ratio'] = df['volume'] / df['volume_sma']
+            df['volume_spike'] = df['volume_ratio'] > self.params['volume_threshold']
+            
+            # Price action patterns
+            df['price_range'] = (df['high'] - df['low']) / df['close']
+            df['breakout'] = (df['close'] > df['high'].rolling(window=10).max().shift(1))
+            df['breakdown'] = (df['close'] < df['low'].rolling(window=10).min().shift(1))
+            
+            return df
+            
+        except Exception as e:
+            self.logger.error(f"❌ Error calculating technical indicators: {e}")
+            return df
+
+    def generate_trading_signal(self, df: pd.DataFrame) -> dict:
+        """Generate trading signal using ultra-aggressive parameters - EXACT COPY from live strategy"""
+        try:
+            if df.empty or len(df) < 2:
+                return {'signal': 0, 'confidence': 0, 'reason': 'insufficient_data'}
+            
+            # Get latest row
+            latest = df.iloc[-1]
+            
+            # BULLISH CONDITIONS
+            bullish_momentum = (
+                (latest['momentum_1min'] > self.params['bull_momentum_threshold']) and
+                (latest['momentum_5min'] > 0) and
+                (latest['ema_fast'] > latest['ema_slow'])
+            )
+            
+            bullish_technical = (
+                (latest['rsi_14'] < self.params['rsi_oversold']) and
+                (latest['rsi_9'] > df.iloc[-2]['rsi_9']) and  # RSI improving
+                (latest['close'] > latest['sma_trend'])
+            )
+            
+            bullish_volume = (
+                latest['volume_spike'] and
+                (latest['volume_ratio'] > self.params['min_volume_ratio'])
+            )
+            
+            bullish_pattern = (
+                latest['breakout'] or 
+                ((latest['close'] > latest['ema_fast']) and (latest['price_range'] > 0.001))
+            )
+            
+            # BEARISH CONDITIONS
+            bearish_momentum = (
+                (latest['momentum_1min'] < -self.params['bear_momentum_threshold']) and
+                (latest['momentum_5min'] < 0) and
+                (latest['ema_fast'] < latest['ema_slow'])
+            )
+            
+            bearish_technical = (
+                (latest['rsi_14'] > self.params['rsi_overbought']) and
+                (latest['rsi_9'] < df.iloc[-2]['rsi_9']) and  # RSI declining
+                (latest['close'] < latest['sma_trend'])
+            )
+            
+            bearish_volume = (
+                latest['volume_spike'] and
+                (latest['volume_ratio'] > self.params['min_volume_ratio'])
+            )
+            
+            bearish_pattern = (
+                latest['breakdown'] or
+                ((latest['close'] < latest['ema_fast']) and (latest['price_range'] > 0.001))
+            )
+            
+            # DEBUG: Check what conditions are triggering (DISABLED to reduce spam)
+            # if latest['close'] > 0:  # Only debug when we have valid data
+            #     self.logger.debug(f"🔍 DEBUG - RSI_14: {latest['rsi_14']:.1f}, RSI_9: {latest['rsi_9']:.1f}, Volume_ratio: {latest['volume_ratio']:.2f}, Volume_spike: {latest['volume_spike']}")
+            #     self.logger.debug(f"🔍 DEBUG - Momentum_1min: {latest['momentum_1min']:.4f}, EMA_fast: {latest['ema_fast']:.2f}, EMA_slow: {latest['ema_slow']:.2f}")
+            #     self.logger.debug(f"🔍 DEBUG - Bullish conditions: momentum={bullish_momentum}, technical={bullish_technical}, volume={bullish_volume}, pattern={bullish_pattern}")
+
+            # Calculate signal scores
+            call_score = (
+                int(bullish_momentum) * self.params['momentum_weight'] +
+                int(bullish_technical) * self.params['technical_weight'] +
+                int(bullish_volume) * self.params['volume_weight'] +
+                int(bullish_pattern) * self.params['pattern_weight']
+            )
+            
+            put_score = (
+                int(bearish_momentum) * self.params['momentum_weight'] +
+                int(bearish_technical) * self.params['technical_weight'] +
+                int(bearish_volume) * self.params['volume_weight'] +
+                int(bearish_pattern) * self.params['pattern_weight']
+            )
+            
+            # Determine signal
+            min_score = self.params['min_signal_score']
+            
+            if call_score >= min_score:
+                signal = 1  # CALL
+                score = call_score
+                reason = "bullish_multi_factor"
+            elif put_score >= min_score:
+                signal = -1  # PUT
+                score = put_score
+                reason = "bearish_multi_factor"
+            else:
+                signal = 0
+                score = max(call_score, put_score)
+                reason = "insufficient_score"
+            
+            # Calculate confidence
+            if signal != 0:
+                base_confidence = score / 10.0  # Normalize
+                momentum_boost = abs(latest['momentum_1min']) * 100
+                volume_boost = (latest['volume_ratio'] - 1) * 20
+                volatility_boost = latest.get('high_vol_regime', 0) * 10
+                
+                confidence = base_confidence + momentum_boost + volume_boost + volatility_boost
+                confidence = min(confidence, 1.0)  # Cap at 1.0
+            else:
+                confidence = 0
+            
+            return {
+                'signal': signal,
+                'confidence': confidence,
+                'score': score,
+                'reason': reason,
+                'spy_price': latest['close'],
+                'timestamp': latest.get('timestamp', datetime.now())
+            }
+            
+        except Exception as e:
+            self.logger.error(f"❌ Error generating signal: {e}")
+            return {'signal': 0, 'confidence': 0, 'reason': 'error'}
+
     def generate_signals(self, spy_bars: pd.DataFrame) -> List[Dict]:
         """
-        Generate trading signals using EXACT logic from live strategy
-        Matches moderate signal detection with 0.1% threshold
+        Generate signals using EXACTLY same logic as live strategy
+        Now using the real multi-factor technical analysis
         """
         signals = []
         
-        if len(spy_bars) < 10:
+        if len(spy_bars) < self.params['sma_period']:
             return signals
         
-        # Calculate price changes (5-minute window like live strategy)
-        spy_bars = spy_bars.copy()
-        spy_bars['price_change_5min'] = spy_bars['close'].pct_change(periods=5)
-        spy_bars['volume_ma'] = spy_bars['volume'].rolling(window=10).mean()
+        # CRITICAL FIX: Resample to 1-minute bars (live strategy uses minute data, not second data)
+        spy_bars_minute = spy_bars.resample('1T').agg({
+            'open': 'first',
+            'high': 'max', 
+            'low': 'min',
+            'close': 'last',
+            'volume': 'sum'
+        }).dropna()
         
-        for i in range(5, len(spy_bars)):
-            current_time = spy_bars.index[i]
+        self.logger.info(f"📊 Resampled from {len(spy_bars):,} second bars to {len(spy_bars_minute):,} minute bars")
+        
+        # Calculate technical indicators on minute data
+        spy_bars_minute = self.calculate_technical_indicators(spy_bars_minute.copy())
+        
+        # Generate signals for each minute (like live strategy) 
+        for i in range(self.params['sma_period'], len(spy_bars_minute)):
+            current_time = spy_bars_minute.index[i]
             
             # Skip if not market hours
             if not self.is_market_hours(current_time):
                 continue
             
-            current_price = spy_bars['close'].iloc[i]
-            price_change_pct = spy_bars['price_change_5min'].iloc[i]
+            # Get data up to current point for signal generation
+            current_data = spy_bars_minute.iloc[:i+1].tail(50)  # Use last 50 bars like live strategy
             
-            # MOMENTUM SIGNALS (0.1% threshold - matches live)
-            if abs(price_change_pct) >= self.params['signal_threshold']:
-                signal_type = 'CALL' if price_change_pct > 0 else 'PUT'
-                confidence = min(abs(price_change_pct) / self.params['signal_threshold'], 1.0)
+            # Generate trading signal using the exact live strategy method
+            signal_info = self.generate_trading_signal(current_data)
+            
+            # Convert to backtest format if signal meets threshold
+            if signal_info['signal'] != 0 and signal_info['confidence'] >= self.params['confidence_threshold']:
+                
+                # CHECK TIMING: Minimum time between signals (like live strategy)
+                if self.last_signal_time is not None:
+                    time_since_last = (current_time - self.last_signal_time).total_seconds()
+                    if time_since_last < self.min_time_between_signals:
+                        # self.logger.debug(f"⏳ Signal ignored: Too soon since last signal ({time_since_last:.0f}s < {self.min_time_between_signals}s)")
+                        continue
+                
+                signal_type = 'CALL' if signal_info['signal'] == 1 else 'PUT'
+                
+                # Update last signal time
+                self.last_signal_time = current_time
                 
                 signals.append({
                     'timestamp': current_time,
                     'type': signal_type,
-                    'confidence': confidence,
-                    'spy_price': current_price,
-                    'price_change_pct': price_change_pct,
-                    'signal_source': 'MOMENTUM'
+                    'confidence': signal_info['confidence'],
+                    'spy_price': signal_info['spy_price'],
+                    'signal_source': signal_info['reason'],
+                    'score': signal_info['score']
                 })
                 
-                self.logger.debug(f"📊 MOMENTUM Signal: {signal_type} (confidence: {confidence:.3f}, move: {price_change_pct*100:.3f}%)")
-            
-            # QUIET MARKET SIGNALS (matches live strategy fallback)
-            elif abs(price_change_pct) >= 0.0003:  # 0.03% minimum move
-                signal_type = 'PUT' if price_change_pct < 0 else 'CALL'  # Contrarian like live
-                confidence = 0.400  # Fixed confidence for quiet signals
-                
-                signals.append({
-                    'timestamp': current_time,
-                    'type': signal_type,
-                    'confidence': confidence,
-                    'spy_price': current_price,
-                    'price_change_pct': price_change_pct,
-                    'signal_source': 'QUIET_MARKET'
-                })
-                
-                self.logger.debug(f"📊 QUIET MARKET Signal: {signal_type} (confidence: {confidence:.3f}, small move: {price_change_pct*100:.3f}%)")
+                self.logger.info(f"🎯 MULTI-FACTOR Signal: {signal_type} (confidence: {signal_info['confidence']:.3f}, score: {signal_info['score']}, reason: {signal_info['reason']})")
+            else:
+                # Log why signal was rejected (DISABLED to reduce spam)
+                pass
+                # if signal_info['signal'] == 0:
+                #     self.logger.debug(f"❌ Signal rejected: No signal (score: {signal_info.get('score', 0)})")
+                # elif signal_info['confidence'] < self.params['confidence_threshold']:
+                #     self.logger.debug(f"❌ Signal rejected: Low confidence ({signal_info['confidence']:.3f} < {self.params['confidence_threshold']})")
         
         return signals
     
@@ -579,6 +777,7 @@ class LiveUltraAggressive0DTEBacktest:
         # Reset daily tracking
         self.daily_pnl = 0.0
         self.daily_trades = 0
+        self.last_signal_time = None  # Reset signal timing for new day
         day_trades = []
         
         # Load cached data
