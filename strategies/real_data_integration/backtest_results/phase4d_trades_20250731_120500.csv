@@ -1,0 +1,7 @@
+date,strategy,gross_pnl,net_pnl,total_costs,contracts,outcome,market_conditions,spy_close,strike,premium,breakeven
+20240301,itm_put_sale,22.000000000003638,16.1300000000036,5.8700000000000365,1,ASSIGNED,"{'valid': True, 'daily_return': 0.6833847181038073, 'intraday_range': 1.7064980460695667, 'market_regime': 'bull'}",512.71,513,0.51,512.49
+20240304,itm_put_sale,34.99999999999546,28.999999999995506,5.999999999999954,1,ASSIGNED,"{'valid': True, 'daily_return': 0.015618289016424043, 'intraday_range': 1.3373159970325295, 'market_regime': 'neutral'}",512.3,513,1.05,511.95
+20240305,itm_put_sale,-223.99999999999864,-231.88999999999862,7.889999999999986,1,ASSIGNED,"{'valid': True, 'daily_return': -1.0514361795860836, 'intraday_range': 10.149198206488757, 'market_regime': 'bear'}",505.36,509,1.4,507.6
+20240306,itm_put_sale,-59.99999999999772,-66.2499999999977,6.249999999999979,1,ASSIGNED,"{'valid': True, 'daily_return': 0.1514019426638953, 'intraday_range': 1.3557355774902635, 'market_regime': 'neutral'}",509.35,511,1.05,509.95
+20240307,itm_put_sale,75.0,68.6,6.400000000000006,1,EXPIRED_WORTHLESS,"{'valid': True, 'daily_return': 1.2035999921397553, 'intraday_range': 6.486667059678908, 'market_regime': 'bull'}",515.015,515,0.75,514.25
+20240308,itm_put_sale,-52.999999999997726,-59.179999999997705,6.179999999999978,1,ASSIGNED,"{'valid': True, 'daily_return': -0.8046534173533645, 'intraday_range': 1.3766359670382982, 'market_regime': 'bear'}",511.6,513,0.87,512.13
