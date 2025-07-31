@@ -1,0 +1,178 @@
+{
+  "month_year": "2024-03",
+  "total_trading_days": 21,
+  "successful_days": 17,
+  "failed_days": 4,
+  "total_pnl": -3.0546683414860443,
+  "avg_daily_pnl": -0.17968637302859083,
+  "total_trades": 2,
+  "avg_trades_per_day": 0.11764705882352941,
+  "total_signals": 38,
+  "ml_filter_effectiveness": 0.05263157894736842,
+  "win_rate": 0.0,
+  "avg_pnl_per_trade": -1.5273341707430221,
+  "risk_metrics": {
+    "sharpe_ratio": -0.3530617932720041,
+    "sortino_ratio": -1.0804036836319593,
+    "max_drawdown": -3.0546683414860443,
+    "volatility": 0.5089374620894133,
+    "var_95": -1.4567730713427274,
+    "skewness": -2.6436190185283386,
+    "kurtosis": 5.7286433155008005,
+    "positive_days": 0,
+    "negative_days": 2,
+    "max_daily_gain": 0.0,
+    "max_daily_loss": -1.6449360030768467,
+    "total_return": -3.0546683414860443
+  },
+  "day_of_week_analysis": {
+    "Monday": {
+      "count": 0
+    },
+    "Tuesday": {
+      "avg_pnl": 0.0,
+      "count": 4,
+      "win_rate": 0.0,
+      "total_pnl": 0.0,
+      "best_day": 0.0,
+      "worst_day": 0.0
+    },
+    "Wednesday": {
+      "avg_pnl": -0.3524330846022994,
+      "count": 4,
+      "win_rate": 0.0,
+      "total_pnl": -1.4097323384091975,
+      "best_day": 0.0,
+      "worst_day": -1.4097323384091975
+    },
+    "Thursday": {
+      "avg_pnl": 0.0,
+      "count": 4,
+      "win_rate": 0.0,
+      "total_pnl": 0.0,
+      "best_day": 0.0,
+      "worst_day": 0.0
+    },
+    "Friday": {
+      "avg_pnl": -0.32898720061536935,
+      "count": 5,
+      "win_rate": 0.0,
+      "total_pnl": -1.6449360030768467,
+      "best_day": 0.0,
+      "worst_day": -1.6449360030768467
+    }
+  },
+  "weekly_breakdown": [
+    {
+      "week": 1,
+      "days": 4,
+      "total_pnl": 0.0,
+      "avg_daily_pnl": 0.0,
+      "total_trades": 0,
+      "profitable_days": 0
+    },
+    {
+      "week": 2,
+      "days": 4,
+      "total_pnl": 0.0,
+      "avg_daily_pnl": 0.0,
+      "total_trades": 0,
+      "profitable_days": 0
+    },
+    {
+      "week": 3,
+      "days": 4,
+      "total_pnl": -1.4097323384091975,
+      "avg_daily_pnl": -0.3524330846022994,
+      "total_trades": 1,
+      "profitable_days": 0
+    },
+    {
+      "week": 4,
+      "days": 4,
+      "total_pnl": -1.6449360030768467,
+      "avg_daily_pnl": -0.4112340007692117,
+      "total_trades": 1,
+      "profitable_days": 0
+    },
+    {
+      "week": 5,
+      "days": 1,
+      "total_pnl": 0.0,
+      "avg_daily_pnl": 0.0,
+      "total_trades": 0,
+      "profitable_days": 0
+    }
+  ],
+  "volatility_analysis": {
+    "avg_volatility": 0.12156163183701528,
+    "volatility_trend": "stable",
+    "regime_distribution": {
+      "normal_volatility": 10,
+      "low_volatility": 7
+    },
+    "volatility_range": {
+      "min": 0.06462893749236219,
+      "max": 0.17335162107691904
+    }
+  },
+  "signal_quality_trends": {
+    "avg_monthly_quality": 0.7892156862745098,
+    "quality_trend": "improving",
+    "filter_consistency": 0.9110918898136892,
+    "best_quality_day": 0.8999999999999999,
+    "worst_quality_day": 0.7
+  },
+  "ml_feature_evolution": {},
+  "performance_consistency": {
+    "consistency_score": -1.7477980303519267,
+    "trade_frequency_consistency": -1.7386127875258306,
+    "rolling_performance": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.2819464676818395,
+      -0.2819464676818395,
+      -0.6109336682972089,
+      -0.6109336682972089,
+      -0.6109336682972089,
+      -0.32898720061536935,
+      -0.32898720061536935
+    ],
+    "performance_volatility": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.6304514677525407,
+      0.6304514677525407,
+      0.8406782953186783,
+      0.8406782953186783,
+      0.8406782953186783,
+      0.7356377443033265,
+      0.7356377443033265
+    ],
+    "profitable_streaks": {
+      "max_streak": 0,
+      "avg_streak": 0,
+      "total_streaks": 0
+    },
+    "losing_streaks": {
+      "max_streak": 1,
+      "avg_streak": 1.0,
+      "total_streaks": 2
+    }
+  },
+  "strategic_insights": [
+    "\u26a0\ufe0f Monthly loss of $-3.05 - optimization needed",
+    "\u26a0\ufe0f Poor risk-adjusted returns - need better signal quality",
+    "\ud83c\udfaf ML filter highly selective - consider threshold adjustment",
+    "\ud83d\udcca Low trade frequency - consider signal sensitivity",
+    "\u26a0\ufe0f Limited sample size (n = 17) - extend testing"
+  ]
+}

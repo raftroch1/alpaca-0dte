@@ -272,6 +272,63 @@ class Phase4MLStrategy:
         
         return quality_prob >= self.quality_threshold
     
+    def get_ml_quality_score(self, signal: Dict, features: MLSignalFeatures) -> float:
+        """
+        Get raw ML quality score (0-1) for analytics
+        
+        Args:
+            signal: Trading signal
+            features: Extracted ML features
+            
+        Returns:
+            Quality score between 0 and 1
+        """
+        if self.ml_model is None:
+            # Use rule-based scoring
+            return self._rule_based_quality_score(features)
+        
+        # Prepare features for ML model
+        feature_array = np.array([[
+            features.rsi_divergence, features.ema_momentum, features.volume_surge,
+            features.price_action_power, features.volatility_regime, features.trend_alignment,
+            features.time_decay_factor, features.market_stress, features.pattern_success_rate,
+            features.recent_accuracy, features.signal_confidence
+        ]])
+        
+        # Scale and predict
+        feature_scaled = self.feature_scaler.transform(feature_array)
+        quality_prob = self.ml_model.predict_proba(feature_scaled)[0, 1]
+        
+        return quality_prob
+    
+    def _rule_based_quality_score(self, features: MLSignalFeatures) -> float:
+        """Get rule-based quality score for analytics"""
+        score = 0.5  # Base score
+        
+        # Technical strength
+        if abs(features.rsi_divergence) > 0.3:
+            score += 0.1
+        if abs(features.ema_momentum) > 0.002:
+            score += 0.1
+        if features.volume_surge > 0.5:
+            score += 0.1
+        
+        # Market conditions  
+        if 0.2 < features.volatility_regime < 0.8:
+            score += 0.1
+        if features.time_decay_factor > 0.5:
+            score += 0.1
+        if features.market_stress < 0.7:
+            score += 0.1
+        
+        # Historical success
+        if features.pattern_success_rate > 0.6:
+            score += 0.2
+        if features.recent_accuracy > 0.5:
+            score += 0.1
+        
+        return min(score, 1.0)
+    
     def _rule_based_filter(self, features: MLSignalFeatures) -> bool:
         """Fallback rule-based filtering when ML model not available"""
         score = 0
