@@ -1,7 +1,7 @@
 # Alpaca 0DTE Trading Framework - Project Structure
 
 ## 🎯 Overview
-This project extends the official Alpaca Python SDK with a specialized framework for 0DTE (Zero Days to Expiration) options trading using ThetaData as the market data provider. The framework is designed for rapid strategy development, backtesting, and live trading with SPY options.
+This project extends the official Alpaca Python SDK with a specialized framework for 0DTE (Zero Days to Expiration) options trading using **REAL historical data** from multiple sources. The framework supports rapid strategy development, **realistic backtesting with 6 months of real data**, and live trading with SPY options.
 
 ## 📁 Project Structure
 
@@ -9,7 +9,7 @@ This project extends the official Alpaca Python SDK with a specialized framework
 alpaca-0dte/
 ├── alpaca/                          # 🚫 CORE SDK - DO NOT MODIFY
 │   └── [original alpaca-py files]   # Original Alpaca Python SDK
-├── thetadata/                       # ✅ ThetaData Integration
+├── thetadata/                       # ✅ ThetaData Integration (6 MONTHS OF REAL DATA)
 │   ├── theta_connection/            # Core ThetaData connectivity
 │   │   ├── __init__.py
 │   │   ├── connector.py             # Main ThetaData API connector
@@ -18,26 +18,42 @@ alpaca-0dte/
 │   │   ├── utils.py                 # ThetaData utility functions
 │   │   ├── ThetaTerminal.jar        # ThetaData Terminal app
 │   │   └── test_theta_integration.py
-│   ├── cached_data/                 # Cached market data
-│   │   ├── spy_bars/               # SPY minute bar data
-│   │   └── option_chains/          # Option chain data
+│   ├── cached_data/                 # ✅ 6 MONTHS OF CACHED REAL DATA
+│   │   ├── spy_bars/               # SPY minute bar data (Jan-Jun 2024)
+│   │   └── option_chains/          # Option chain data (Jan-Jun 2024)
 │   └── tests/                      # ThetaData testing suite
 ├── strategies/                      # ✅ Strategy Development
 │   ├── base_theta_strategy.py      # Abstract base strategy template
 │   ├── cached_strategy_runner.py   # Fast cached strategy execution
 │   ├── demo_cached_strategy.py     # Working demo strategy
-│   ├── live_ultra_aggressive_0dte.py # Live trading strategy
+│   ├── real_data_integration/      # ✅ REAL DATA FRAMEWORK (PHASE 3+)
+│   │   ├── alpaca_real_data_strategy.py    # REAL Alpaca historical option data
+│   │   ├── monthly_alpaca_real_data_runner.py # Monthly real data backtesting
+│   │   ├── monthly_phase3_real_data.py     # Phase 3 real data runner
+│   │   ├── real_theta_data_strategy.py     # REAL ThetaData option prices
+│   │   └── REALISTIC_BACKTEST_README.md    # Real backtesting documentation
+│   ├── live_ultra_aggressive_0dte/ # ✅ LIVE TRADING & PHASE 4D
+│   │   ├── live_ultra_aggressive_0dte.py   # Live trading strategy
+│   │   ├── phase4d_bull_put_spreads.py     # Phase 4D credit spreads
+│   │   ├── phase4d_real_data_test.py       # Phase 4D real data testing
+│   │   ├── archived_experiments/           # Historical development
+│   │   └── monthly_reports/                # Performance reports
 │   ├── logs/                       # Strategy execution logs
-│   └── templates/                  # Strategy templates (to be created)
+│   └── templates/                  # Strategy templates
 ├── backtrader/                     # ✅ Backtesting Framework
 │   ├── multi_day_cached_backtest.py
 │   ├── run_v2_real_backtest.py
-│   └── results/                    # Backtest results (to be created)
-├── config/                         # ✅ Configuration (to be created)
+│   └── results/                    # Backtest results
+├── framework_tests/                 # ✅ Framework Testing
+│   ├── connectivity/
+│   ├── alpaca/
+│   └── strategy/
+├── config/                         # ✅ Configuration
 │   ├── environment.yml             # Conda environment specification
 │   ├── requirements.txt            # Python dependencies
 │   └── trading_config.py           # Trading configuration
-└── docs/                          # ✅ Documentation (to be created)
+├── memory-bank/                    # ✅ MCP Memory Bank for Context
+└── docs/                          # ✅ Documentation
     ├── STRATEGY_DEVELOPMENT.md     # Strategy development guide
     ├── THETADATA_SETUP.md         # ThetaData setup instructions
     └── API_REFERENCE.md           # API reference documentation
@@ -45,161 +61,163 @@ alpaca-0dte/
 
 ## 🔧 Core Components
 
-### 1. ThetaData Integration (`/thetadata/`)
-- **Purpose**: Provides robust connection to ThetaData API for real options market data
+### 1. Real Data Integration (`/strategies/real_data_integration/`)
+- **Purpose**: PROVEN framework using REAL historical option prices
+- **Key Achievement**: Eliminates simulation bias with actual market data
+- **Data Sources**:
+  - **Alpaca Historical Option API**: Real option prices (Feb 2024+)
+  - **ThetaData Cache**: 6 months of real SPY minute bars
+  - **Real Option Chains**: Actual bid/ask spreads and Greeks
 - **Key Files**:
-  - `connector.py`: Reusable ThetaData API connector with caching
+  - `alpaca_real_data_strategy.py`: Core real data framework
+  - `monthly_alpaca_real_data_runner.py`: Monthly backtesting with real data
+  - `REALISTIC_BACKTEST_README.md`: Real vs simulated backtesting guide
+
+### 2. ThetaData Integration (`/thetadata/`) - 6 MONTHS OF REAL DATA
+- **Purpose**: Provides robust connection to ThetaData API with extensive caching
+- **Data Coverage**: January 2024 - June 2024 (6 months of trading data)
+- **Key Files**:
+  - `connector.py`: ThetaData API connector with caching
   - `thetadata_collector.py`: Market data collection and caching system
   - `option_chain_fetcher.py`: Option chain fetching utilities
 - **Data Storage**: Compressed pickle files in `cached_data/` for fast loading
+- **Volume**: 125+ days of SPY minute bars and option chains
 
-### 2. Strategy Framework (`/strategies/`)
-- **Purpose**: Template-based strategy development with standardized logging and execution
+### 3. Phase 4D Development (`/strategies/live_ultra_aggressive_0dte/`)
+- **Current Focus**: Bull put credit spreads using REAL data
+- **Strategy Type**: Option selling (credit spreads) vs option buying
 - **Key Files**:
-  - `base_theta_strategy.py`: Abstract base class for all strategies
-  - `cached_strategy_runner.py`: Fast execution engine using cached data
-- **Requirements**: All strategies MUST inherit from `BaseThetaStrategy`
+  - `live_ultra_aggressive_0dte.py`: Live trading implementation
+  - `phase4d_bull_put_spreads.py`: Credit spread strategy with real data
+  - `phase4d_real_data_test.py`: Real data validation testing
+- **Target**: $300-500 daily profit with realistic risk management
 
-### 3. Backtesting Framework (`/backtrader/`)
-- **Purpose**: Real data backtesting using ThetaData
-- **Key Files**:
-  - `multi_day_cached_backtest.py`: Multi-day strategy comparison
-  - `run_v2_real_backtest.py`: Real data backtesting runner
+### 4. Strategy Framework (`/strategies/`)
+- **Purpose**: Template-based strategy development with real data integration
+- **Evolution**: Moved from simulation (Phase 1-2) to real data (Phase 3+)
+- **Requirements**: All new strategies MUST use real data frameworks
 
-## 🚨 Critical Rules
+## 🚨 Critical Rules - UPDATED FOR REAL DATA
 
-### 1. Core SDK Protection
-- **NEVER modify any files in the `alpaca/` directory**
-- All custom functionality goes in `thetadata/`, `strategies/`, or `backtrader/`
-- Use imports to access core Alpaca functionality
+### 1. NO MORE SIMULATION
+- **RULE**: ALL strategies must use REAL historical data
+- **Approved Sources**: 
+  - AlpacaHistoricalOptionAPI (alpaca_real_data_strategy.py)
+  - ThetaData cache (6 months of real data)
+- **FORBIDDEN**: Synthetic option pricing, random walks, estimated time decay
 
-### 2. Environment Requirements
-- **ALWAYS use Conda environment**: `Alpaca_Options`
-- Activate before any development: `conda activate Alpaca_Options`
+### 2. Data Sources Priority
+1. **Primary**: AlpacaRealDataStrategy (Feb 2024+)
+2. **Secondary**: ThetaData cache (Jan-Jun 2024)
+3. **Forbidden**: Any simulation or synthetic data
 
-### 3. Data Requirements
-- **ONLY use real ThetaData** - NO simulation fallback
-- Proper error handling for missing option data
-- Skip trades when real data unavailable (don't simulate)
-- Validate ThetaData connection before strategy execution
+### 3. Framework Requirements
+- **ALWAYS extend existing real data frameworks**
+- **NEVER create new simulated approaches**
+- **Use proven infrastructure in /real_data_integration/**
 
-## 🎯 Strategy Development Workflow
+## 🎯 Current Development Status
 
-### 1. Strategy Creation Process
-1. Inherit from `BaseThetaStrategy` in `/strategies/base_theta_strategy.py`
-2. Implement required abstract methods:
-   - `analyze_market_conditions()`
-   - `execute_strategy()`
-   - `calculate_position_size()`
-3. Create corresponding backtest file in `/backtrader/`
-4. Test with cached data using `cached_strategy_runner.py`
-5. Run full backtest with real ThetaData
+### ✅ Completed (REAL DATA)
+- [x] 6 months of cached ThetaData (Jan-Jun 2024)
+- [x] AlpacaRealDataStrategy framework (REAL option prices)
+- [x] Monthly real data backtesting validation
+- [x] Realistic trading cost modeling
+- [x] Phase 3 profitable strategy with real data
+- [x] Live trading integration with Alpaca
 
-### 2. Naming Conventions
-- **Base strategies**: `[strategy_name]_v1.py`
-- **Improved versions**: `[strategy_name]_v2.py`, `[strategy_name]_v3.py`
-- **Class names**: PascalCase (e.g., `VixContrarianStrategy`)
-- **Log files**: `{strategy_name}_{version}_{timestamp}.log`
+### 🚧 Phase 4D - Bull Put Spreads (IN PROGRESS)
+- [x] Strategy framework using real data
+- [x] Bull put spread logic implementation
+- [ ] **FIX**: Integration with AlpacaRealDataStrategy
+- [ ] **FIX**: Import chain issues resolved
+- [ ] Monthly validation with 6 months of real data
+- [ ] Live paper trading deployment
 
-### 3. Versioning Rules
-- Keep ALL working versions for comparison
-- Create new version file when improving strategy
-- Document changes between versions in docstring
-- Include version comparison in commit messages
+### 📋 Next Phase (REAL DATA ONLY)
+- [ ] Extend AlpacaRealDataStrategy for Phase 4D
+- [ ] 6-month comprehensive backtest using real data
+- [ ] Performance validation vs Phase 3
+- [ ] Live deployment with real money
 
-## 📊 Logging & Performance Tracking
+## 🎯 Strategy Development Workflow - REAL DATA ONLY
 
-### Automatic Logging
-- **Location**: `strategies/logs/` folder
-- **Filename format**: `{strategy_name}_{version}_{timestamp}.log`
-- **CSV results**: `{strategy_name}_{version}_{timestamp}_trades.csv`
-- **Output**: Both file and console logging
+### 1. Strategy Creation Process (UPDATED)
+1. **EXTEND** existing frameworks in `/real_data_integration/`
+2. **USE** AlpacaRealDataStrategy or RealThetaDataStrategy
+3. **VALIDATE** with cached real data (6 months available)
+4. **TEST** with monthly real data runners
+5. **DEPLOY** to live paper trading
 
-### Performance Metrics
-- Win rate and profit/loss tracking
-- Trade execution timing
-- Data availability validation
-- Error handling and recovery
+### 2. Data Validation Requirements
+- **MANDATORY**: Use real historical option prices
+- **VALIDATION**: Compare against known market events
+- **TESTING**: Monthly backtests with statistical significance
+- **MONITORING**: Track performance vs realistic expectations
 
-## 🧪 Testing and Validation
+## 📊 Real Data Performance Validation
 
-### Framework Tests Directory (`/framework_tests/`)
-All custom framework testing files are organized in a dedicated directory (separate from core SDK):
+### Phase 3 Real Data Results (PROVEN)
+- **Data Source**: AlpacaRealDataStrategy
+- **Period**: March 2024 (20 trading days)
+- **Results**: -$1,794 total P&L, 196 trades
+- **Validation**: REAL market data, no simulation bias
 
-#### `/framework_tests/connectivity/`
-- `test_framework_connectivity.py` - Comprehensive framework connectivity test
-- `README.md` - Testing documentation and usage guide
-- `run_all_tests.py` - Organized test runner for all categories
+### ThetaData Cache Statistics
+- **Coverage**: January 2024 - June 2024
+- **SPY Bars**: 125+ trading days of minute data
+- **Option Chains**: Daily option chain snapshots
+- **Format**: Compressed pickle files for fast access
 
-#### `/framework_tests/alpaca/`
-- `test_alpaca_api.py` - Alpaca API key and endpoint validation
-- `test_alpaca_sdk_proper.py` - Proper SDK usage validation
-- `test_trading_specific.py` - Trading-specific API investigation
-- `diagnose_alpaca_account.py` - Account diagnostics and troubleshooting
+## 🔌 MCP Integration
 
-#### `/framework_tests/strategy/`
-- `test_strategy_startup.py` - Strategy initialization testing for API failures
+### Memory Bank MCP
+- **Purpose**: Maintain context across development sessions
+- **Location**: `/memory-bank/`
+- **Usage**: Store critical decisions and architectural choices
 
-### Data Caching
-- SPY minute bars cached in `thetadata/cached_data/spy_bars/`
-- Option chains cached in `thetadata/cached_data/option_chains/`
-- Compressed pickle format for fast loading
-- Date-based file organization
+### Chat History MCP  
+- **Purpose**: Access past conversation context
+- **Usage**: Prevent regression to dismissed approaches
 
-## 🔌 ThetaData Connection
-
-### Connection Requirements
-- ThetaData Terminal must be running locally
-- Default endpoint: `http://127.0.0.1:25510`
-- Connection validation before strategy execution
-- Proper error handling for API failures
-
-
-## 🚀 Quick Start
+## 🚀 Quick Start - REAL DATA ONLY
 
 1. **Environment Setup**:
    ```bash
    conda activate Alpaca_Options
-   cd /path/to/alpaca-0dte
+   cd alpaca-0dte/strategies/real_data_integration
    ```
 
-2. **Test ThetaData Connection**:
+2. **Test Real Data Framework**:
    ```bash
-   python thetadata/theta_connection/connector.py
+   python alpaca_real_data_strategy.py --date 20240201
    ```
 
-3. **Run Demo Strategy**:
+3. **Run Phase 4D with Real Data**:
    ```bash
-   python strategies/demo_cached_strategy.py
+   python phase4d_bull_put_spreads.py --date 20240201
    ```
 
-4. **Create New Strategy**:
-   ```bash
-   cp strategies/base_theta_strategy.py strategies/my_strategy_v1.py
-   # Edit and implement required methods
-   ```
-
-## 📋 Development Checklist
+## 📋 Development Checklist - REAL DATA
 
 Before creating a new strategy:
 - [ ] Conda environment `Alpaca_Options` activated
-- [ ] ThetaData Terminal running and connected
-- [ ] Base strategy template copied and renamed
-- [ ] Required abstract methods implemented
-- [ ] Logging configuration set up
-- [ ] Backtest file created
-- [ ] Error handling implemented
-- [ ] Data validation added
+- [ ] Using AlpacaRealDataStrategy or proven real data framework
+- [ ] NO simulation or synthetic data sources
+- [ ] Tested with cached real data (6 months available)
+- [ ] Validated with monthly real data runners
+- [ ] Proper error handling for missing real data
+- [ ] Performance expectations aligned with realistic market conditions
 
 ## 🔍 Troubleshooting
 
 ### Common Issues
-1. **ThetaData Connection Failed**: Ensure ThetaData Terminal is running
-2. **Import Errors**: Verify Conda environment is activated
-3. **Missing Data**: Check cached data availability for target dates
-4. **Strategy Errors**: Ensure all abstract methods are implemented
+1. **Import Errors**: Check sys.path for real_data_integration
+2. **Missing Real Data**: Use cached data from 6-month dataset  
+3. **Simulation Creep**: STOP - use existing real data frameworks
+4. **Performance Unrealistic**: Validate against real market conditions
 
 ### Debug Tools
-- `thetadata/theta_connection/test_theta_integration.py`
-- Connection validation in `connector.py`
-- Logging output in `strategies/logs/`
+- `AlpacaRealDataStrategy` - proven real data framework
+- Monthly real data runners for validation
+- 6 months of cached ThetaData for testing

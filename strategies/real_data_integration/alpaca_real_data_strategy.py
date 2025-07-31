@@ -40,6 +40,7 @@ load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 from alpaca.data.historical import OptionHistoricalDataClient
 from alpaca.data.requests import OptionBarsRequest
 from alpaca.data.timeframe import TimeFrame
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'live_ultra_aggressive_0dte', 'archived_experiments'))
 from phase3_profitable_0dte_strategy import Phase3ProfitableStrategy
 
 class AlpacaRealDataStrategy(Phase3ProfitableStrategy):
