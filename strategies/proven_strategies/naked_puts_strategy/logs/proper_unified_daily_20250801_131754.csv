@@ -1,0 +1,4 @@
+date,trade_executed,strategy_used,pnl,spy_close,trade_details
+20240301,True,primary,25.000000000007276,512.71,"{'strategy': 'balanced_bull_put_spreads', 'contracts': 2, 'short_strike': 513.0, 'long_strike': 509.0, 'short_premium': 0.51, 'long_premium': 0.01, 'net_credit': 0.5, 'gross_premium': 100.0, 'total_costs': 16.0, 'net_premium': 84.0, 'max_risk': 700.0, 'spy_close': 512.71, 'final_pnl': 25.000000000007276, 'outcome': 'PARTIAL_LOSS'}"
+20240304,True,primary,4.0,512.3,"{'strategy': 'balanced_bull_put_spreads', 'contracts': 2, 'short_strike': 512.0, 'long_strike': 508.0, 'short_premium': 0.11, 'long_premium': 0.01, 'net_credit': 0.1, 'gross_premium': 20.0, 'total_costs': 16.0, 'net_premium': 4.0, 'max_risk': 780.0, 'spy_close': 512.3, 'final_pnl': 4.0, 'outcome': 'BOTH_EXPIRED_WORTHLESS'}"
+20240305,False,,0.0,505.36,

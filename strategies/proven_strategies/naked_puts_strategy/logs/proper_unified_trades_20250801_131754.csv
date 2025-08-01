@@ -1,0 +1,3 @@
+strategy,contracts,short_strike,long_strike,short_premium,long_premium,net_credit,gross_premium,total_costs,net_premium,max_risk,spy_close,final_pnl,outcome
+balanced_bull_put_spreads,2,513.0,509.0,0.51,0.01,0.5,100.0,16.0,84.0,700.0,512.71,25.000000000007276,PARTIAL_LOSS
+balanced_bull_put_spreads,2,512.0,508.0,0.11,0.01,0.1,20.0,16.0,4.0,780.0,512.3,4.0,BOTH_EXPIRED_WORTHLESS

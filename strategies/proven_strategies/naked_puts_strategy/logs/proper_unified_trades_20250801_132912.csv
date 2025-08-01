@@ -1,0 +1,8 @@
+strategy,contracts,short_strike,long_strike,short_premium,long_premium,net_credit,gross_premium,total_costs,net_premium,max_risk,spy_close,final_pnl,outcome
+balanced_bull_put_spreads,2.0,513.0,509.0,0.51,0.01,0.5,100.0,16.0,84.0,700.0,512.71,25.000000000007276,PARTIAL_LOSS
+balanced_bull_put_spreads,2.0,512.0,508.0,0.11,0.01,0.1,20.0,16.0,4.0,780.0,512.3,4.0,BOTH_EXPIRED_WORTHLESS
+balanced_bull_put_spreads,2.0,512.0,508.0,0.05,0.01,0.04,8.0,16.0,-8.0,792.0,511.6,-88.99999999999545,PARTIAL_LOSS
+closer_atm_bull_put_spread,,511.0,508.0,0.02,0.01,0.01,,,,299.0,,-7.0,BOTH_EXPIRED_WORTHLESS
+balanced_bull_put_spreads,2.0,517.0,513.0,0.24,0.01,0.22999999999999998,46.0,16.0,30.0,754.0,516.83,-4.9999999999918145,PARTIAL_LOSS
+closer_atm_bull_put_spread,,516.0,513.0,0.02,0.01,0.01,,,,299.0,,-10.499999999997272,PARTIAL_LOSS
+balanced_bull_put_spreads,2.0,510.0,506.0,0.2,0.02,0.18000000000000002,36.00000000000001,16.0,20.000000000000007,764.0,509.6,-60.999999999995445,PARTIAL_LOSS

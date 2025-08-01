@@ -159,6 +159,36 @@ SECURITY_RULES:
   - "Store credentials in .env file (gitignored)"
   - "Validate all external data inputs"
 
+# 🗂️ FOLDER STRUCTURE MANAGEMENT
+FOLDER_STRUCTURE_RULES:
+  - "ALWAYS respect existing folder structure"
+  - "NEVER create duplicate folders or files outside established hierarchy"
+  - "NEVER create files at root level of strategies/ unless specifically requested"
+  - "ALWAYS place strategy-specific files within their designated subdirectories"
+  - "Documentation files go within the strategy folder they document"
+  - "Templates and frameworks go in strategies/templates/ or existing proven_strategies/ subfolders"
+  
+CURRENT_ESTABLISHED_STRUCTURE:
+  strategies/proven_strategies/:
+    - unified_long_iron_condor_25k/    # Main profitable strategy
+    - naked_puts_strategy/             # Original strategy system
+    - live_ultra_aggressive_0dte/      # Live trading examples
+    - multi_regime_strategies/         # Multi-regime approaches
+    - turtle_strategies/               # Turtle-based strategies
+    - setup_env.py                    # Environment setup
+  
+  strategies/real_data_integration/:   # Minimal utility files only
+  strategies/templates/                # General templates
+  strategies/failed_experiments/       # Archive of failed strategies
+  strategies/archived_results/         # Historical results
+
+DUPLICATE_PREVENTION:
+  - "Check if file/folder already exists before creating"
+  - "Use existing folders rather than creating new ones"
+  - "When unsure of location, ASK the user where to place files"
+  - "Never create multiple versions of the same documentation"
+  - "Consolidate related files within existing structure"
+
 # 📈 PERFORMANCE
 PERFORMANCE_GUIDELINES:
   - "Use cached data for fast iteration"
