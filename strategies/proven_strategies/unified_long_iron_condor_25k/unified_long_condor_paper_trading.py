@@ -347,29 +347,39 @@ class UnifiedLongCondorPaperTrading:
             calls = self.trading_client.get_option_contracts(call_request).option_contracts
             puts = self.trading_client.get_option_contracts(put_request).option_contracts
             
-            # Organize by strike and type
-            available_contracts = {}
+            # Filter for liquidity (following Alpaca examples pattern)
+            filtered_calls = []
+            filtered_puts = []
             
-            for contract in calls + puts:
-                if (hasattr(contract, 'open_interest') and 
-                    contract.open_interest and 
-                    contract.open_interest >= self.params['min_open_interest']):
-                    
-                    key = f"{contract.strike_price}_{contract.type.value}"
-                    available_contracts[key] = {
-                        'symbol': contract.symbol,
-                        'strike': float(contract.strike_price),
-                        'type': contract.type.value,
-                        'expiration': contract.expiration_date,
-                        'open_interest': contract.open_interest
-                    }
+            for contract in calls:
+                try:
+                    open_interest = int(contract.open_interest) if contract.open_interest else 0
+                    if open_interest >= self.params['min_open_interest']:
+                        filtered_calls.append(contract)
+                except (ValueError, TypeError):
+                    continue  # Skip contracts with invalid open interest data
             
-            self.logger.info(f"📋 Found {len(available_contracts)} liquid 0DTE contracts")
+            for contract in puts:
+                try:
+                    open_interest = int(contract.open_interest) if contract.open_interest else 0
+                    if open_interest >= self.params['min_open_interest']:
+                        filtered_puts.append(contract)
+                except (ValueError, TypeError):
+                    continue  # Skip contracts with invalid open interest data
+            
+            # Return structure matching Alpaca examples
+            available_contracts = {
+                'calls': filtered_calls,
+                'puts': filtered_puts
+            }
+            
+            total_contracts = len(filtered_calls) + len(filtered_puts)
+            self.logger.info(f"📋 Found {total_contracts} liquid 0DTE contracts")
             return available_contracts
             
         except Exception as e:
             self.logger.error(f"❌ Failed to discover options: {e}")
-            return {}
+            return {'calls': [], 'puts': []}
     
     def check_market_conditions(self, spy_data: pd.DataFrame) -> Tuple[bool, str, str]:
         """
@@ -424,19 +434,26 @@ class UnifiedLongCondorPaperTrading:
         return short_put_strike, long_put_strike, short_call_strike, long_call_strike
     
     def get_option_prices_with_validation(self, contracts: Dict, symbols: List[str]) -> Optional[Dict]:
-        """Get option prices with bid/ask spread validation"""
+        """Get option prices with bid/ask spread validation (following Alpaca examples)"""
         try:
             prices = {}
             
             for symbol in symbols:
-                # Find contract info
-                contract_key = None
-                for key, contract in contracts.items():
-                    if contract['symbol'] == symbol:
-                        contract_key = key
+                # Find contract info in the new structure
+                contract_found = None
+                # Search in calls
+                for contract in contracts.get('calls', []):
+                    if contract.symbol == symbol:
+                        contract_found = contract
                         break
+                # Search in puts if not found in calls
+                if not contract_found:
+                    for contract in contracts.get('puts', []):
+                        if contract.symbol == symbol:
+                            contract_found = contract
+                            break
                 
-                if not contract_key:
+                if not contract_found:
                     self.logger.warning(f"⚠️ Contract not found for {symbol}")
                     return None
                 
@@ -480,24 +497,29 @@ class UnifiedLongCondorPaperTrading:
             # Get strikes
             short_put_strike, long_put_strike, short_call_strike, long_call_strike = self.get_iron_condor_strikes(spy_price)
             
-            # Find matching contracts
+            # Find matching contracts (following Alpaca examples pattern)
             short_put_symbol = None
             long_put_symbol = None
             short_call_symbol = None
             long_call_symbol = None
             
-            for key, contract in contracts.items():
-                strike = contract['strike']
-                option_type = contract['type']
+            # Search in puts
+            for contract in contracts.get('puts', []):
+                strike = float(contract.strike_price)
                 
-                if option_type == 'put' and strike == short_put_strike:
-                    short_put_symbol = contract['symbol']
-                elif option_type == 'put' and strike == long_put_strike:
-                    long_put_symbol = contract['symbol']
-                elif option_type == 'call' and strike == short_call_strike:
-                    short_call_symbol = contract['symbol']
-                elif option_type == 'call' and strike == long_call_strike:
-                    long_call_symbol = contract['symbol']
+                if strike == short_put_strike:
+                    short_put_symbol = contract.symbol
+                elif strike == long_put_strike:
+                    long_put_symbol = contract.symbol
+            
+            # Search in calls
+            for contract in contracts.get('calls', []):
+                strike = float(contract.strike_price)
+                
+                if strike == short_call_strike:
+                    short_call_symbol = contract.symbol
+                elif strike == long_call_strike:
+                    long_call_symbol = contract.symbol
             
             # Validate all symbols found
             required_symbols = [short_put_symbol, long_put_symbol, short_call_symbol, long_call_symbol]
@@ -692,6 +714,248 @@ class UnifiedLongCondorPaperTrading:
         except Exception as e:
             self.logger.error(f"❌ Emergency close failed: {e}")
     
+    def execute_short_call_supplement(self, spy_price: float, contracts: Dict) -> Optional[str]:
+        """Execute short call supplement for very low volatility days"""
+        try:
+            # Short call slightly OTM
+            target_strike = round(spy_price + 0.5, 0)  # $0.50 above SPY
+            
+            # Find suitable call contract
+            call_contracts = [c for c in contracts['calls'] if float(c.strike_price) == target_strike]
+            if not call_contracts:
+                self.logger.warning(f"⚠️ No call contract found for strike ${target_strike}")
+                return None
+            
+            call_contract = call_contracts[0]
+            
+            # Get current option price
+            prices = self.get_option_prices_with_validation(contracts, [call_contract.symbol])
+            if not prices or call_contract.symbol not in prices:
+                self.logger.warning(f"⚠️ No price data for {call_contract.symbol}")
+                return None
+            
+            option_price = prices[call_contract.symbol]['mid_price']
+            
+            # Check minimum premium
+            if option_price < 0.03:
+                self.logger.info(f"📊 SHORT CALL: Premium too low ${option_price:.3f} < $0.03")
+                return None
+            
+            # Execute short call order
+            order_legs = [
+                OptionLegRequest(
+                    symbol=call_contract.symbol,
+                    side=OrderSide.SELL,  # SELL call (short)
+                    ratio_qty=self.params['counter_base_contracts']
+                )
+            ]
+            
+            order_request = MarketOrderRequest(
+                symbol="SPY",
+                legs=order_legs,
+                side=OrderSide.SELL,
+                time_in_force=TimeInForce.DAY,
+                order_class=OrderClass.MLEG
+            )
+            
+            order = self.trading_client.submit_order(order_request)
+            order_id = str(order.id)
+            
+            self.logger.info(f"📞 SHORT CALL SUPPLEMENT EXECUTED:")
+            self.logger.info(f"   Strike: ${target_strike} (${target_strike - spy_price:.2f} above SPY)")
+            self.logger.info(f"   Premium: ${option_price:.3f}")
+            self.logger.info(f"   Contracts: {self.params['counter_base_contracts']}")
+            self.logger.info(f"   Order ID: {order_id}")
+            
+            # Track position
+            position_data = {
+                'strategy': 'short_call_supplement',
+                'strike': target_strike,
+                'premium': option_price,
+                'contracts': self.params['counter_base_contracts'],
+                'entry_time': datetime.now(),
+                'spy_price_at_entry': spy_price
+            }
+            
+            self.track_position(order_id, position_data)
+            self.trade_logger.info(f"COUNTER_EXECUTED | Strategy: short_call_supplement | Strike: ${target_strike} | Premium: ${option_price:.3f} | Contracts: {self.params['counter_base_contracts']}")
+            return order_id
+            
+        except Exception as e:
+            self.logger.error(f"❌ Short call supplement execution failed: {e}")
+            return None
+    
+    def execute_bear_put_spread(self, spy_price: float, contracts: Dict) -> Optional[str]:
+        """Execute bear put spread for moderate volatility"""
+        try:
+            # Bear put spread: Buy higher strike, sell lower strike
+            long_strike = round(spy_price + 1.0, 0)   # $1 above SPY
+            short_strike = round(spy_price - 1.0, 0)  # $1 below SPY
+            
+            # Find suitable put contracts
+            long_puts = [c for c in contracts['puts'] if float(c.strike_price) == long_strike]
+            short_puts = [c for c in contracts['puts'] if float(c.strike_price) == short_strike]
+            
+            if not long_puts or not short_puts:
+                self.logger.warning(f"⚠️ Missing put contracts for bear spread")
+                return None
+            
+            long_put = long_puts[0]
+            short_put = short_puts[0]
+            
+            # Get option prices
+            symbols = [long_put.symbol, short_put.symbol]
+            prices = self.get_option_prices_with_validation(contracts, symbols)
+            if not prices or len(prices) != 2:
+                self.logger.warning(f"⚠️ Missing price data for bear put spread")
+                return None
+            
+            long_price = prices[long_put.symbol]['mid_price']
+            short_price = prices[short_put.symbol]['mid_price']
+            
+            # Calculate spread cost
+            net_cost = long_price - short_price
+            if net_cost <= 0 or net_cost > 1.0:  # Max $1.00 cost
+                self.logger.info(f"📊 BEAR PUT: Invalid spread cost ${net_cost:.3f}")
+                return None
+            
+            # Execute bear put spread order
+            order_legs = [
+                OptionLegRequest(
+                    symbol=long_put.symbol,
+                    side=OrderSide.BUY,  # BUY higher strike put
+                    ratio_qty=self.params['counter_base_contracts']
+                ),
+                OptionLegRequest(
+                    symbol=short_put.symbol,
+                    side=OrderSide.SELL,  # SELL lower strike put
+                    ratio_qty=self.params['counter_base_contracts']
+                )
+            ]
+            
+            order_request = MarketOrderRequest(
+                symbol="SPY",
+                legs=order_legs,
+                side=OrderSide.BUY,  # Net debit trade
+                time_in_force=TimeInForce.DAY,
+                order_class=OrderClass.MLEG
+            )
+            
+            order = self.trading_client.submit_order(order_request)
+            order_id = str(order.id)
+            
+            self.logger.info(f"🐻 BEAR PUT SPREAD EXECUTED:")
+            self.logger.info(f"   Long: ${long_strike} @ ${long_price:.3f}")
+            self.logger.info(f"   Short: ${short_strike} @ ${short_price:.3f}")
+            self.logger.info(f"   Net Cost: ${net_cost:.3f}")
+            self.logger.info(f"   Contracts: {self.params['counter_base_contracts']}")
+            self.logger.info(f"   Order ID: {order_id}")
+            
+            # Track position
+            position_data = {
+                'strategy': 'bear_put_spread',
+                'long_strike': long_strike,
+                'short_strike': short_strike,
+                'net_cost': net_cost,
+                'contracts': self.params['counter_base_contracts'],
+                'entry_time': datetime.now(),
+                'spy_price_at_entry': spy_price
+            }
+            
+            self.track_position(order_id, position_data)
+            self.trade_logger.info(f"COUNTER_EXECUTED | Strategy: bear_put_spread | Long: ${long_strike} | Short: ${short_strike} | Cost: ${net_cost:.3f}")
+            return order_id
+            
+        except Exception as e:
+            self.logger.error(f"❌ Bear put spread execution failed: {e}")
+            return None
+    
+    def execute_closer_atm_spreads(self, spy_price: float, contracts: Dict) -> Optional[str]:
+        """Execute closer to ATM spreads for low premium days"""
+        try:
+            # Get closer to ATM than normal Long Iron Condor
+            put_strike = round(spy_price - 0.25, 0)  # Only $0.25 below SPY
+            call_strike = round(spy_price + 0.25, 0)  # Only $0.25 above SPY
+            
+            # Find suitable contracts
+            puts = [c for c in contracts['puts'] if float(c.strike_price) == put_strike]
+            calls = [c for c in contracts['calls'] if float(c.strike_price) == call_strike]
+            
+            if not puts or not calls:
+                self.logger.warning(f"⚠️ Missing contracts for closer ATM spreads")
+                return None
+            
+            put_contract = puts[0]
+            call_contract = calls[0]
+            
+            # Get option prices
+            symbols = [put_contract.symbol, call_contract.symbol]
+            prices = self.get_option_prices_with_validation(contracts, symbols)
+            if not prices or len(prices) != 2:
+                self.logger.warning(f"⚠️ Missing price data for closer ATM spreads")
+                return None
+            
+            put_price = prices[put_contract.symbol]['mid_price']
+            call_price = prices[call_contract.symbol]['mid_price']
+            
+            # Check minimum premium
+            if put_price < 0.05 and call_price < 0.05:
+                self.logger.info(f"📊 CLOSER ATM: Both premiums too low")
+                return None
+            
+            # Execute short straddle (or strangle)
+            order_legs = [
+                OptionLegRequest(
+                    symbol=put_contract.symbol,
+                    side=OrderSide.SELL,  # SELL put
+                    ratio_qty=self.params['counter_base_contracts']
+                ),
+                OptionLegRequest(
+                    symbol=call_contract.symbol,
+                    side=OrderSide.SELL,  # SELL call
+                    ratio_qty=self.params['counter_base_contracts']
+                )
+            ]
+            
+            order_request = MarketOrderRequest(
+                symbol="SPY",
+                legs=order_legs,
+                side=OrderSide.SELL,  # Net credit trade
+                time_in_force=TimeInForce.DAY,
+                order_class=OrderClass.MLEG
+            )
+            
+            order = self.trading_client.submit_order(order_request)
+            order_id = str(order.id)
+            
+            total_premium = put_price + call_price
+            
+            self.logger.info(f"🎯 CLOSER ATM SPREADS EXECUTED:")
+            self.logger.info(f"   Put: ${put_strike} @ ${put_price:.3f}")
+            self.logger.info(f"   Call: ${call_strike} @ ${call_price:.3f}")
+            self.logger.info(f"   Total Premium: ${total_premium:.3f}")
+            self.logger.info(f"   Contracts: {self.params['counter_base_contracts']}")
+            self.logger.info(f"   Order ID: {order_id}")
+            
+            # Track position
+            position_data = {
+                'strategy': 'closer_atm_spreads',
+                'put_strike': put_strike,
+                'call_strike': call_strike,
+                'total_premium': total_premium,
+                'contracts': self.params['counter_base_contracts'],
+                'entry_time': datetime.now(),
+                'spy_price_at_entry': spy_price
+            }
+            
+            self.track_position(order_id, position_data)
+            self.trade_logger.info(f"COUNTER_EXECUTED | Strategy: closer_atm_spreads | Put: ${put_strike} | Call: ${call_strike} | Premium: ${total_premium:.3f}")
+            return order_id
+            
+        except Exception as e:
+            self.logger.error(f"❌ Closer ATM spreads execution failed: {e}")
+            return None
+    
     def is_market_hours(self) -> bool:
         """Check if market is open (bulletproof pattern)"""
         now = datetime.now().time()
@@ -763,8 +1027,27 @@ class UnifiedLongCondorPaperTrading:
                                     self.logger.warning("⚠️ No suitable option contracts found")
                             
                             else:
-                                # TODO: Implement counter strategies
-                                self.logger.info(f"📋 Counter strategy {strategy_type} - implementation pending")
+                                # Execute counter strategies
+                                contracts = self.discover_0dte_options(spy_price)
+                                
+                                if contracts:
+                                    order_id = None
+                                    
+                                    if strategy_type == "short_call_supplement":
+                                        order_id = self.execute_short_call_supplement(spy_price, contracts)
+                                    elif strategy_type == "bear_put_spreads":
+                                        order_id = self.execute_bear_put_spread(spy_price, contracts)
+                                    elif strategy_type == "closer_atm_spreads":
+                                        order_id = self.execute_closer_atm_spreads(spy_price, contracts)
+                                    else:
+                                        self.logger.warning(f"⚠️ Unknown counter strategy: {strategy_type}")
+                                    
+                                    if order_id:
+                                        self.logger.info(f"✅ Counter strategy {strategy_type} executed: {order_id}")
+                                    else:
+                                        self.logger.info(f"📊 Counter strategy {strategy_type} filtered out")
+                                else:
+                                    self.logger.warning("⚠️ No suitable option contracts found for counter strategy")
                         
                         else:
                             self.logger.debug(f"📊 {reason}")
